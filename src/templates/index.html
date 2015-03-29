@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+ 
+<html>
+ 
+<head lang="en">
+	<link rel="stylesheet" href="{{STATIC_URL}}css/main.css">
+ 
+    <meta charset="UTF-8">
+ 
+    <title>Tuts+ Django Example</title>
+ 
+</head>
+ 
+<body>
+ 
+<h1>Welcome to your Django Site.</h1>
+ 
+<h3>Here are your objects:</h3>
+ 
+<p>
+ 
+    <ul>
+ 
+    {% for user in users %}
+ 
+    <li>
+ 
+        {{ user.name }}
+ 
+    </li>
+ 
+    {% endfor %}
+ 
+    </ul>
+ 
+</p>
+ 
+ 
+ 
+</body>
+ 
+</html>
