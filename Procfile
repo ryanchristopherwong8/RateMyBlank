@@ -1,0 +1,1 @@
+web: gunicorn RateMyBlank.wsgi --log-file -
