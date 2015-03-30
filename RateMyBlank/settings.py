@@ -57,16 +57,8 @@ WSGI_APPLICATION = 'RateMyBlank.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mylocaldb',
-        'USER': 'testuser',
-        'PASSWORD': '123123',
-        'HOST': '',
-        'PORT': '',
-    }
-}
+import dj_database_url
+DATABASES = {'default' : dj_database_url.config() }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -94,3 +86,8 @@ STATIC_ROOT = 'static'
 # STATICFILES_DIRS = (
 #     os.path.join(BASE_DIR, 'static'),
 # )
+
+try:
+    from local_settings import *
+except ImportError, e:
+    pass
