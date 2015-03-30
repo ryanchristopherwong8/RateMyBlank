@@ -81,11 +81,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-<<<<<<< HEAD
-import dj_database_url
-DATABASES['default'] =  dj_database_url.config()
-=======
->>>>>>> 5162367a2490819b909a80a35b48806bd273b04c
+
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
