@@ -88,6 +88,6 @@ STATIC_ROOT = 'static'
 # )
 
 try:
-    from local_settings import *
-except ImportError, e:
+    from RateMyBlank.local_settings import *
+except ImportError:
     pass
