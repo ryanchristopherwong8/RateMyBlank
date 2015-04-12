@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+ 
+<html>
+ 
+<head lang="en">
+    <script src="../static/javascript/jquery.js"></script>
+    <link rel="stylesheet" href="{{STATIC_URL}}css/main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="../static/javascript/rango-ajax.js"></script>
+    <meta charset="UTF-8">
+ 
+    <title>Tuts+ Django Example</title>
+ 
+</head>
+ 
+<body>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus"></span>Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add Rated Object</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+            <label for="ratedObjectname" class="control-label">Name:</label>
+            <input type="text" class="form-control" id="ratedObjectName">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="contentContainer">
+    <p>
+        <ul class="list-group">
+            {% load app_filters %}
+            {% for ratedobject in ratedobjects %}
+            
+            <h4 class="list-group-item-heading ">{{ ratedobject.name }}</a></h4>
+            <li class="list-group-item">{{ ratedobject.id }}</li>
+            
+            {% endfor %}
+     
+        </ul>
+    </p>
+
+{% if current_user.is_authenticated %}
+<p>Logged in as {{ current_user.username }}</p>
+<a href="/logout/">Logout</a><br />
+{% else %}
+<a href="/signup/">Sign Up</a><br />
+<a href="/login/">Login</a><br />
+{% endif %}
+
+
+</div>
+
+</html>

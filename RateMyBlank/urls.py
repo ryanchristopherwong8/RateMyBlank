@@ -1,6 +1,9 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from src import views
+from src.views import views
+from src.views import userview
+from src.views import ratedmodelview
+from src.views import ratedobjectview
 
 urlpatterns = patterns('',
     # Examples:
@@ -8,5 +11,9 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', views.index, name='index'),
+    url(r'^$', ratedmodelview.index, name='index'),
+    url(r'^(\w+)/(\w+)', ratedmodelview.show, name='ratedmodelshow'),
+    url(r'^signup/$', userview.register, name='register'),
+    url(r'^login/$', userview.user_login, name='login'),
+    url(r'^logout/$', userview.user_logout, name='logout'),
 )

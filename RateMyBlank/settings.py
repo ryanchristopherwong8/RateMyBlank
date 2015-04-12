@@ -81,7 +81,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # import os
 # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_URL = '/static/'
-STATIC_ROOT = 'static'
+STATIC_ROOT = '../RateMyBlank/src/static'
 
 # STATICFILES_DIRS = (
 #     os.path.join(BASE_DIR, 'static'),
