@@ -1,61 +1,17 @@
-<!DOCTYPE html>
- 
-<html>
- 
-<head lang="en">
-    <script src="http://code.jquery.com/jquery-2.1.3.js"></script>
-    <link rel="stylesheet" href="{{STATIC_URL}}css/main.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    
-    <meta charset="UTF-8">
- 
-    <title>Tuts+ Django Example</title>
- 
-</head>
- 
-<body>
+{% extends 'base.html' %}
 
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Profile</a></li>
-      </ul>
-    
-      <ul class="nav navbar-nav navbar-right">
-        <button type="button" class="btn btn-success btn-sm">Login</button>
-        <button type="button" class="btn btn-info btn-sm">Sign Up</button>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+{% block title %}RateMy{% endblock %}
 
-<div class="contentContainer">
-    <p>
-        <ul class="list-group">
-            {% load app_filters %}
-            {% for ratedmodel in ratedmodels %}
-            
-            <h4 class="list-group-item-heading "><a href="{{ ratedmodel.name|removewhitespace }}/{{ ratedmodel.id }}">{{ ratedmodel.name }}</a></h4>
-            <li class="list-group-item">{{ ratedmodel.id }}</li>
-            
-            {% endfor %}
-     
-        </ul>
-    </p>
-</div>
+{% block body_block %}
+<ul class="list-group">
+  {% load app_filters %}
+  {% for ratedmodel in ratedmodels %}
 
-{% if current_user.is_authenticated %}
-<p>Logged in as {{ current_user.username }}</p>
-<a href="/logout/">Logout</a><br />
-{% else %}
-<a href="/signup/">Sign Up</a><br />
-<a href="/login/">Login</a><br />
-{% endif %}
- 
-</body>
- 
-</html>
+  <h4 class="list-group-item-heading "><a href="{{ ratedmodel.name|removewhitespace }}/{{ ratedmodel.id }}">{{ ratedmodel.name }}</a></h4>
+  <li class="list-group-item">{{ ratedmodel.id }}</li>
+
+  {% endfor %}
+
+</ul>
+
+{% endblock %}
