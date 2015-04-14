@@ -3,6 +3,14 @@
 {% block title %}RateMy{% endblock %}
 
 {% block body_block %}
+
+<a href="/ratedmodel/submit">
+  <button type="button" class="btn btn-sm btn-success">
+      <span class="glyphicon glyphicon-plus"></span>
+          Create a "Rate My Page"
+  </button>
+</a>
+
 <ul class="list-group">
   {% load app_filters %}
   {% for ratedmodel in ratedmodels %}

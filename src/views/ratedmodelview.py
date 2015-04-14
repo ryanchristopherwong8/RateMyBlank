@@ -16,3 +16,7 @@ def show(request, ratedModelName, ratedModelId):
   ratedobjects = RatedObject.objects.filter(rated_model_id = ratedModelId).order_by("-created_at")
   ratedmodel = RatedModel.objects.get(pk=ratedModelId)
   return render(request, 'ratedmodel.html', {"ratedobjects": ratedobjects, "current_user": current_user, "ratedmodel": ratedmodel})
+
+def submit(request):
+  current_user = request.user
+  return render(request, 'submit_ratedmodel.html', {"current_user": current_user})
