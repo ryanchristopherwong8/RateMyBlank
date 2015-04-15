@@ -2,49 +2,47 @@
 
 {% block body_block %}
 
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus"></span>Add Rated Object
-    </button>
+<h1>{{ ratedmodel.name }}</h1>
 
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
+<ul class="list-group">
+    {% load app_filters %}
+    {% for ratedobject in ratedobjects %}
+    <li class="list-group-item">
+        <div class ="col-xs-1">{{ ratedobject.id }}</div>
+        <a href="{{ ratedobject.name|removewhitespace }}/{{ ratedobject.id }}">{{ ratedobject.name }}</a>
+    </li>
+    {% endfor %}
+
+</ul>
+
+{% if current_user.is_authenticated %}
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus"></span>Add Rated Object
+</button>
+{% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Add Rated Object</h4>
-          </div>
-          {% load app_filters %}
-          <form id="addRatedObject" method="post" action="create/">
-            <div class="modal-body">
-                {% csrf_token %}
-                {{ ratedobject_form.as_p }}
-                name: <input type="text" name="name" value="" size="50" />
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add Rated Object</h4>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <input type="submit" class="btn btn-default" value="submit" />
-            </div>
-          </form>
+            {% load app_filters %}
+            <form id="addRatedObject" method="post" action="create/">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    {{ ratedobject_form.as_p }}
+                    name: <input type="text" name="name" value="" size="50" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-default" value="submit" />
+                </div>
+            </form>
         </div>
-      </div>
     </div>
-
-
-        <p>
-            <ul class="list-group">
-                {% load app_filters %}
-                {% for ratedobject in ratedobjects %}
-
-                <h4 class="list-group-item-heading ">
-                    <a href="{{ ratedobject.name|removewhitespace }}/{{ ratedobject.id }}">{{ ratedobject.name }}</a>
-                </h4>
-                <li class="list-group-item">{{ ratedobject.id }}</li>
-
-                {% endfor %}
-
-            </ul>
-        </p>
-
+</div>
 
 {% endblock %}
