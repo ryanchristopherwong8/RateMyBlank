@@ -1,6 +1,47 @@
 {% extends 'base.html' %}
 
+{% block javascript %}
+<script src="{{STATIC_URL}}javascript/submit_ratedmodel.js"></script>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{STATIC_URL}}css/submit_ratedmodel.css">
+{% endblock %}
+
 {% block body_block %}
+
+<form class="form-horizontal" method="post" action="create/">
+  {% csrf_token %}
+  <fieldset>
+      <!-- Form Name -->
+    <legend>Submit a Rate My Page</legend>
+
+    <div id="forms">
+    {{ form.as_p }}
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-1 control-label" for="name">Name:</label>
+        <div class="col-md-5">
+          <input id="name" name="name" type="text" placeholder="" class="form-control input-md pull-left" required="">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label id="attributeLabel" class="col-md-2 control-label" for="attribute">
+          <div id="addAttribute" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></div>
+          Attribute(s):
+        </label>
+        <div class="col-md-4">
+          <input id="attribute" name="attribute" type="text" placeholder="" class="form-control input-md pull-left" required="">
+        </div>
+      </div>
+    </div>
+    <input type="submit" class="btn btn-primary col-md-2" value="submit" />
+
+  </fieldset>
+</form>
+
 
 
 {% endblock %}
