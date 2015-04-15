@@ -4,22 +4,25 @@
 
 {% block body_block %}
 
-<a href="/ratedmodel/submit">
-  <button type="button" class="btn btn-sm btn-success">
-      <span class="glyphicon glyphicon-plus"></span>
-          Create a "Rate My Page"
-  </button>
-</a>
+<h1>Pages</h1>
 
 <ul class="list-group">
-  {% load app_filters %}
-  {% for ratedmodel in ratedmodels %}
-
-  <h4 class="list-group-item-heading "><a href="{{ ratedmodel.name|removewhitespace }}/{{ ratedmodel.id }}">{{ ratedmodel.name }}</a></h4>
-  <li class="list-group-item">{{ ratedmodel.id }}</li>
-
-  {% endfor %}
-
+    {% load app_filters %}
+    {% for ratedmodel in ratedmodels %}
+    <li class="list-group-item">
+        <div class ="col-xs-1">{{ ratedmodel.id }}</div>
+        <a href="{{ ratedmodel.name|removewhitespace }}/{{ ratedmodel.id }}">{{ ratedmodel.name }}</a>
+    </li>
+    {% endfor %}
 </ul>
+
+{% if current_user.is_authenticated %}
+<a href="/ratedmodel/submit">
+    <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span>
+        Create a "Rate My Page"
+    </button>
+</a>
+{% endif %}
 
 {% endblock %}
