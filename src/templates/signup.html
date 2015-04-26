@@ -5,7 +5,33 @@
   <h1>Sign Up</h1>
   <form action="/signup/" method="post">
     {% csrf_token %}
-    {{ user_form.as_p }}
+    <label class="field-wrapper">
+        Username:
+        <div class="form-input">
+            {{ user_form.username }}
+        </div>
+    </label>
+    <label class="field-wrapper">
+        Email:
+        <div class="form-input">
+            {{ user_form.email }}
+        </div>
+    </label>
+    <label class="field-wrapper">
+        Password:
+        <div class="form-input">
+            {{ user_form.password }}
+            {{ user_form.password.errors.as_text }}
+        </div>
+    </label>
+        <label class="field-wrapper">
+        Confirm Password:
+        <div class="form-input">
+            {{ user_form.confirm_password }}
+            {{ user_form.confirm_password.errors.as_text }}
+        </div>
+    </label>
+    <br>
     <input type="submit" value="Submit" />
   </form>
 

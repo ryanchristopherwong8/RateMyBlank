@@ -1,3 +1,17 @@
 body {
     background-color: #EFF0F1;
 }
+
+#main-container {
+    background-color: #FFFFFF;
+    padding: 10px 30px;
+    border-radius: 6px;
+}
+
+.form-input {
+    display: block;
+}
+
+.field-wrapper {
+    display: block;
+}

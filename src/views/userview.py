@@ -7,16 +7,21 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 
-from django.forms import ModelForm
 from django import forms
 
 from src.models.userprofile import UserProfile
 
-class UserForm(ModelForm):
+class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
+    confirm_password = forms.CharField(widget=forms.PasswordInput())
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('username', 'email', 'password', 'confirm_password')
+    def clean(self):
+        if 'password' in self.cleaned_data and 'confirm_password' in self.cleaned_data:
+            if self.cleaned_data['password'] != self.cleaned_data['confirm_password']:
+                raise forms.ValidationError("The two password fields didn't match.")
+        return self.cleaned_data
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
@@ -36,10 +41,10 @@ def register(request):
             profile.save()
             return HttpResponseRedirect('/login/')
         else:
-            return HttpResponse('FORM ERROR')
+            print(user_form.errors, profile_form.errors)
     else:
         user_form = UserForm()
-        return render(request, 'signup.html', {'user_form': user_form})
+    return render(request, 'signup.html', {'user_form': user_form})
 
 def user_login(request):
     context = RequestContext(request)
