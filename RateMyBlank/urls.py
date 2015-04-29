@@ -4,6 +4,7 @@ from src.views import views
 from src.views import userview
 from src.views import ratedmodelview
 from src.views import ratedobjectview
+from src.views import reviewview
 
 urlpatterns = patterns('',
     # Examples:
@@ -14,8 +15,9 @@ urlpatterns = patterns('',
     url(r'^$', ratedmodelview.index, name='index'),
     url(r'^ratedmodel/create/$', ratedmodelview.create, name='ratedmodelcreate'),
     url(r'^(?P<ratedModelName>[-\w]+)/(?P<ratedModelId>[-\w]+)/$', ratedmodelview.show, name='ratedmodelshow'),
-    url(r'^(?P<ratedModelName>[-\w]+)/(?P<ratedModelId>[-\w]+)/(?P<ratedObjectName>[-\w]+)/(?P<ratedObjectId>[-\w]+)/', ratedobjectview.show, name='ratedobjectshow'),
+    url(r'^(?P<ratedModelName>[-\w]+)/(?P<ratedModelId>[-\w]+)/(?P<ratedObjectName>[-\w]+)/(?P<ratedObjectId>[-\w]+)/$', ratedobjectview.show, name='ratedobjectshow'),
     url(r'^(?P<ratedModelName>[-\w]+)/(?P<ratedModelId>[-\w]+)/create/$', ratedobjectview.create, name='ratedobjectcreate'),
+    url(r'^(?P<ratedModelName>[-\w]+)/(?P<ratedModelId>[-\w]+)/(?P<ratedObjectName>[-\w]+)/(?P<ratedObjectId>[-\w]+)/review/create/$', reviewview.create, name = 'reviewcreate'),
     url(r'^signup/$', userview.register, name='register'),
     url(r'^login/$', userview.user_login, name='login'),
     url(r'^logout/$', userview.user_logout, name='logout'),
