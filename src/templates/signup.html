@@ -2,8 +2,8 @@
 
 {% block body_block %}
 
-  <h1>Sign Up</h1>
-  <form action="/signup/" method="post">
+<h1>Sign Up</h1>
+<form action="/signup/" method="post">
     {% csrf_token %}
     <label class="field-wrapper">
         Username:
@@ -24,15 +24,27 @@
             {{ user_form.password.errors.as_text }}
         </div>
     </label>
-        <label class="field-wrapper">
+    <label class="field-wrapper">
         Confirm Password:
         <div class="form-input">
             {{ user_form.confirm_password }}
-            {{ user_form.confirm_password.errors.as_text }}
         </div>
     </label>
+
+    {% if user_form.errors %}
+    <div id="form-error">ERRORS:
+        <ul id="form-error-list">
+            {% for i in user_form.non_field_errors %}
+            <li class="form-error">
+                {{i}}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
     <br>
     <input type="submit" value="Submit" />
-  </form>
+</form>
 
 {% endblock %}

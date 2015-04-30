@@ -9,9 +9,15 @@ body {
 }
 
 .form-input {
+    padding: 4px;
     display: block;
 }
 
 .field-wrapper {
     display: block;
+}
+
+.attribute {
+    padding: 3px 3px;
+    background-color: #E8E8E8;
 }

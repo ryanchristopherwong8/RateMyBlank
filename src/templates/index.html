@@ -10,8 +10,15 @@
     {% load app_filters %}
     {% for ratedmodel in ratedmodels %}
     <li class="list-group-item">
-        <div class ="col-xs-1">{{ ratedmodel.id }}</div>
-        <a href="{{ ratedmodel.name|removewhitespace }}/{{ ratedmodel.id }}">{{ ratedmodel.name }}</a>
+        <div class="row">
+            <div class ="col-xs-3">
+                <img style="width:100%"src="http://placehold.it/130x130">
+            </div>
+            <div class ="col-xs-9">
+                <p><a href="{{ ratedmodel.name|removewhitespace }}/{{ ratedmodel.id }}">{{ ratedmodel.name }}</a></p>
+                {{ ratedmodel.description }}
+            </div>
+        </div>
     </li>
     {% endfor %}
 </ul>

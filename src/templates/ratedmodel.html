@@ -4,15 +4,24 @@
 
 <h1>{{ ratedmodel.name }}</h1>
 
+Attributes:
+<ul>
+{% for attribute in attributes %}
+<li>{{ attribute.name }}</li>
+{% endfor %}
+</ul>
+
 <ul class="list-group">
     {% load app_filters %}
     {% for ratedobject in ratedobjects %}
     <li class="list-group-item">
-        <div class ="col-xs-1">{{ ratedobject.id }}</div>
-        <a href="{{ ratedobject.name|removewhitespace }}/{{ ratedobject.id }}">{{ ratedobject.name }}</a>
+        <div class="row">
+            <div class ="col-xs-3">
+                <a href="{{ ratedobject.name|removewhitespace }}/{{ ratedobject.id }}">{{ ratedobject.name }}</a>
+            </div>
+        </div>
     </li>
     {% endfor %}
-
 </ul>
 
 {% if current_user.is_authenticated %}

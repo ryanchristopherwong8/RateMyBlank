@@ -1,25 +1,71 @@
 $( document ).ready(function() {
-  $("#addAttribute").click(function(event){
+    // Code adapted from http://djangosnippets.org/snippets/1389/
+    function updateElementIndex(el, prefix, ndx) {
+        var id_regex = new RegExp('(' + prefix + '-\\d+-)');
+        var replacement = prefix + '-' + ndx + '-';
+        if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex,
+        replacement));
+        if (el.id) el.id = el.id.replace(id_regex, replacement);
+        if (el.name) el.name = el.name.replace(id_regex, replacement);
+    }
 
-    formGroupElement = $('<div/>');
-    formGroupElement.attr({
-      class: "form-group"
+    function deleteForm(btn, prefix) {
+        var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+        if (formCount > 1) {
+            $(btn).parents('.attribute').remove();
+            var forms = $('.attribute'); // Get all the forms
+            // Update the total number of forms (1 less than before)
+            $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+            var i = 0;
+            // Go through the forms and set their indices, names and IDs
+            for (formCount = forms.length; i < formCount; i++) {
+                $(forms.get(i)).children().children().each(function () {
+                    if ($(this).attr('type') == 'text') updateElementIndex(this, prefix, i);
+                });
+            }
+        } // End if
+        else {
+            alert("You have to enter at least one todo attribute!");
+        }
+        return false;
+    }
+
+    function addForm(btn, prefix) {
+        var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+        if (formCount < 10) {
+            // Clone a form (without event handlers) from the first form
+            var row = $(".attribute:first").clone(false).get(0);
+            // Insert it after the last form
+            $(row).removeAttr('id').hide().insertAfter(".attribute:last").slideDown(300);
+
+            // Remove the bits we don't want in the new row/form
+            // e.g. error messages
+            $(".errorlist", row).remove();
+            $(row).children().removeClass("error");
+
+            // Relabel or rename all the relevant bits
+            $(row).children().children().each(function () {
+                updateElementIndex(this, prefix, formCount);
+                $(this).val("");
+            });
+
+            $(row).find(".delete").click(function () {
+                return deleteForm(this, prefix);
+            });
+            // Update the total form count
+            $("#id_" + prefix + "-TOTAL_FORMS").val(formCount + 1);
+        } // End if
+        else {
+            alert("Sorry, you can only enter a maximum of 10 items.");
+        }
+        return false;
+    }
+    // Register the click event handlers
+    $("#add").click(function () {
+        return addForm(this, "form");
     });
 
-    inputContainerElement = $('<div/>');
-    inputContainerElement.attr({
-      class: "col-md-offset-2 col-md-4"
+    $(".delete").click(function () {
+        return deleteForm(this, "form");
     });
-
-    inputTypeElement = $('<input type="text"/>');
-    inputTypeElement.attr({
-      id: 'attribute',
-      name: 'attribute',
-      class: 'form-control input-md pull-left'
-    });
-
-    $(inputContainerElement).append(inputTypeElement);
-    $(formGroupElement).append(inputContainerElement);
-    $("#forms").append(formGroupElement);
-  });
 });

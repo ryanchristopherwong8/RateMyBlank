@@ -41,27 +41,45 @@ def register(request):
             profile.save()
             return HttpResponseRedirect('/login/')
         else:
-            print(user_form.errors, profile_form.errors)
+            print(user_form.errors)
     else:
         user_form = UserForm()
     return render(request, 'signup.html', {'user_form': user_form})
 
-def user_login(request):
-    context = RequestContext(request)
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+class LoginForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+    class Meta:
+        model = User
+        fields = ('username', 'password')
+    def clean(self):
+        username = self.cleaned_data['username']
+        password = self.cleaned_data['password']
         user = authenticate(username=username, password=password)
         if user:
             if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect('/')
+                return self.cleaned_data
             else:
-                return HttpResponse("Your account is disabled.")
+                raise forms.ValidationError("Your account is disabled.")
         else:
-            return HttpResponse("Invalid login details supplied.")
+            raise forms.ValidationError("Invalid login details supplied.")
+        return self.cleaned_data
+
+def user_login(request):
+    context = RequestContext(request)
+    if request.method == 'POST':
+        login_form = LoginForm(data=request.POST)
+        if login_form.is_valid():
+            # authenticating twice, need to change this
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return HttpResponseRedirect('/')
+        else:
+            print(login_form.errors)
     else:
-        return render_to_response('login.html', {}, context)
+        login_form = LoginForm()
+    return render(request, 'login.html', {'login_form': login_form})
 
 def user_logout(request):
     logout(request)

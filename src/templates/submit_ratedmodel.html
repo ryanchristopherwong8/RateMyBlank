@@ -10,26 +10,65 @@
 
 {% block body_block %}
 
-  <form class="form-horizontal" method="post" action="">
+<h1>Add a Page</h1>
+
+<form class="form-horizontal" method="post" action="">
     {% csrf_token %}
-      <div id="forms">
-      {{ form.as_p }}
-        {% for hidden in form.hidden_fields %}
-          {{ hidden }}
-        {% endfor %}
-
-        <div class="form-group">
-          <label id="attributeLabel" class="col-md-2 control-label" for="attribute">
-            <div id="addAttribute" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></div>
-            Attribute(s):
-          </label>
-          <div class="col-md-4">
-            <input id="attribute" name="attribute" type="text" placeholder="" class="form-control input-md pull-left" required="">
-          </div>
+    <label class="field-wrapper">
+        Name:
+        <div class="form-input">
+            {{ rated_model_form.name }}
         </div>
-      </div>
+    </label>
+    <label class="field-wrapper">
+        Description:
+        <div class="form-input">
+            {{ rated_model_form.description }}
+        </div>
+    </label>
+    <div id="form-hidden-fields">
+        {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+        {% endfor %}
+    </div>
 
-      <input type="submit" class="btn btn-primary col-md-2" value="submit" />
-  </form>
+
+
+    <div class="row">
+        <div id="add-attributes">
+            <div class="col-xs-2">
+                Attribute(s):
+            </div>
+            <div class="col-xs-5">
+                {{ attribute_formset.management_form }}
+                <div id="attribute-inputs">
+                    {% for attribute_form in attribute_formset %}
+                        <div class="form-input">
+                            <div class="attribute">
+                                {{ attribute_form.as_p }}
+                                <p><a class="delete" href="#">Delete</a></p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <p><a id="add" href="#">Add another item</a></p>
+            </div>
+        </div>
+    </div>
+
+    {% if rated_model_form.errors %}
+    <div id="form-error">ERRORS:
+        <ul id="form-error-list">
+            {% for i in rated_model_form.non_field_errors %}
+            <li class="form-error">
+                {{i}}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <input type="submit" value="Submit" />
+</form>
 
 {% endblock %}
