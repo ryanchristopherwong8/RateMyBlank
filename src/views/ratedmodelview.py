@@ -29,10 +29,10 @@ def index(request):
     return render(request, 'index.html', {"ratedmodels": ratedmodels, "current_user": current_user})
 
 #Show one
-def show(request, ratedModelName, ratedModelId):
+def show(request, ratedmodel_name, ratedmodel_id):
     current_user = request.user
-    ratedobjects = RatedObject.objects.filter(rated_model_id = ratedModelId).order_by("-created_at")
-    ratedmodel = RatedModel.objects.get(pk=ratedModelId)
+    ratedobjects = RatedObject.objects.filter(ratedmodel_id=ratedmodel_id).order_by("-created_at")
+    ratedmodel = RatedModel.objects.get(pk=ratedmodel_id)
     attributes = ratedmodel.attribute_set.all()
     return render(request, 'ratedmodel.html', {"ratedobjects": ratedobjects, "current_user": current_user, "ratedmodel": ratedmodel, "attributes": attributes})
 
@@ -41,20 +41,20 @@ def create(request):
     context = RequestContext(request)
     AttributeFormSet = formset_factory(AttributeForm)
     if request.method == "POST":
-        rated_model_form = RatedModelForm(request.POST)
+        ratedmodel_form = RatedModelForm(request.POST)
         attribute_formset = AttributeFormSet(request.POST, request.FILES)
-        if rated_model_form.is_valid():
+        if ratedmodel_form.is_valid():
             if attribute_formset.is_valid():
-                ratedmodel = rated_model_form.save(commit=True)
+                ratedmodel = ratedmodel_form.save(commit=True)
                 for attribute_form in attribute_formset.forms:
                     attribute = attribute_form.save(commit=False)
-                    attribute.rated_model_id = ratedmodel.id
+                    attribute.ratedmodel_id = ratedmodel.id
                     attribute.save()
-                url = reverse('ratedmodelshow', kwargs={'ratedModelName' : ratedmodel.name.replace(" ",""), 'ratedModelId' : str(ratedmodel.id)})
+                url = reverse('ratedmodel_show', kwargs={'ratedmodel_name' : ratedmodel.name.replace(" ",""), 'ratedmodel_id' : str(ratedmodel.id)})
                 return HttpResponseRedirect(url)
-        print(rated_model_form.errors)
+        print(ratedmodel_form.errors)
     else:
-        rated_model_form = RatedModelForm()
+        ratedmodel_form = RatedModelForm()
     current_user = request.user
-    return render_to_response('submit_ratedmodel.html', {"current_user": current_user, "rated_model_form": rated_model_form, 'attribute_formset': AttributeFormSet()}, context)
+    return render_to_response('ratedmodel_create.html', {"current_user": current_user, "ratedmodel_form": ratedmodel_form, 'attribute_formset': AttributeFormSet()}, context)
 

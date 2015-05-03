@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+<h1>Add a {{ ratedmodel.name }} item</h1>
+
+<form class="form-horizontal" method="post" action="">
+    {% csrf_token %}
+    <label class="field-wrapper">
+        Name:
+        <div class="form-input">
+            {{ ratedobject_form.name }}
+        </div>
+    </label>
+    <label class="field-wrapper">
+        Description:
+        <div class="form-input">
+            {{ ratedobject_form.description }}
+        </div>
+    </label>
+    <div id="form-hidden-fields">
+        {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+        {% endfor %}
+    </div>
+
+    {% if ratedobject_form.errors %}
+    <div id="form-error">ERRORS:
+        <ul id="form-error-list">
+            {% for i in ratedobject_form.non_field_errors %}
+            <li class="form-error">
+                {{i}}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <input type="submit" value="Submit" />
+</form>
+
+{% endblock %}

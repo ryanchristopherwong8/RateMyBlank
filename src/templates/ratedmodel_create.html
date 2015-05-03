@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block javascript %}
-<script src="{{STATIC_URL}}javascript/submit_ratedmodel.js"></script>
+<script src="{{STATIC_URL}}javascript/ratedmodel_create.js"></script>
 {% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{{STATIC_URL}}css/submit_ratedmodel.css">
+<link rel="stylesheet" href="{{STATIC_URL}}css/ratedmodel_create.css">
 {% endblock %}
 
 {% block body_block %}
@@ -17,13 +17,13 @@
     <label class="field-wrapper">
         Name:
         <div class="form-input">
-            {{ rated_model_form.name }}
+            {{ ratedmodel_form.name }}
         </div>
     </label>
     <label class="field-wrapper">
         Description:
         <div class="form-input">
-            {{ rated_model_form.description }}
+            {{ ratedmodel_form.description }}
         </div>
     </label>
     <div id="form-hidden-fields">
@@ -31,8 +31,6 @@
         {{ hidden }}
         {% endfor %}
     </div>
-
-
 
     <div class="row">
         <div id="add-attributes">
@@ -56,10 +54,10 @@
         </div>
     </div>
 
-    {% if rated_model_form.errors %}
+    {% if ratedmodel_form.errors %}
     <div id="form-error">ERRORS:
         <ul id="form-error-list">
-            {% for i in rated_model_form.non_field_errors %}
+            {% for i in ratedmodel_form.non_field_errors %}
             <li class="form-error">
                 {{i}}
             </li>

@@ -4,12 +4,19 @@
 
 <h1>{{ ratedmodel.name }}</h1>
 
-Attributes:
-<ul>
-{% for attribute in attributes %}
-<li>{{ attribute.name }}</li>
-{% endfor %}
-</ul>
+<p>
+    Description:
+    {{ ratedmodel.description }}
+</p>
+
+<p>
+    Attributes:
+    <ul>
+    {% for attribute in attributes %}
+    <li>{{ attribute.name }}</li>
+    {% endfor %}
+    </ul>
+</p>
 
 <ul class="list-group">
     {% load app_filters %}
@@ -25,9 +32,12 @@ Attributes:
 </ul>
 
 {% if current_user.is_authenticated %}
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus"></span>Add Rated Object
-</button>
+<a href="create">
+    <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span>
+        Add a {{ ratedmodel.name }} item
+    </button>
+</a>
 {% endif %}
 
 <!-- Modal -->

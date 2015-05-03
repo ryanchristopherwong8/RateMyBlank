@@ -15,30 +15,27 @@ from src.models.score import Score
 import pdb
 
 #create new models
-def create(request, ratedModelName, ratedModelId, ratedObjectName, ratedObjectId):
-  context = RequestContext(request)
-  if request.method == "POST":
-    dt = datetime.now()
-    df = DateFormat(dt)
-    current_user = request.user
-    userProfile = UserProfile.objects.get(user = current_user)
-    review = Review.objects.create(reviewer_id = userProfile.id, rated_object_id = ratedObjectId, created_at = df.format('Y-m-d'))
+def create(request, ratedmodel_name, ratedmodel_id, ratedobject_name, ratedobject_id):
+    context = RequestContext(request)
+    if request.method == "POST":
+        dt = datetime.now()
+        df = DateFormat(dt)
+        current_user = request.user
+        userprofile = UserProfile.objects.get(user=current_user)
+        review = Review.objects.create(user_id = userprofile.id, ratedobject_id = ratedobject_id, created_at = df.format('Y-m-d'))
+        scores = request.POST.getlist('score')
+        attributes = request.POST.getlist('attribute_id')
+        _add_score_models(scores, attributes, review.id)
+        url = reverse('ratedobjects_show', kwargs={'ratedmodel_name' : ratedmodel_name, 'ratedmodel_id' : str(ratedmodel.id),
+            'ratedobject_name' : ratedobject_name, 'ratedobject_id' : ratedobject_id})
+        return HttpResponseRedirect(url)
+    else:
+        current_user = request.user
+        attributes = Attribute.objects.filter(ratedmodel = ratedmodel_id)
+        return render_to_response('review_create.html', {"current_user": current_user, "attributes" : attributes}, context)
 
-    scores = request.POST.getlist('score')
-    attributes = request.POST.getlist('attribute_id')
-    _addScoreModels(scores, attributes, review.id)
-
-    url = reverse('ratedobjectshow', kwargs={'ratedModelName' : ratedModelName, 'ratedModelId' : str(ratedmodel.id),
-    'ratedObjectName' : ratedObjectName, 'ratedObjectId' : ratedObjectId})
-    return HttpResponseRedirect(url)
-
-  else:
-    current_user = request.user
-    attributes = Attribute.objects.filter(rated_model = ratedModelId)
-    return render_to_response('submit_review.html', {"current_user": current_user, "attributes" : attributes}, context)
-
-def _addScoreModels(scores, attributes, review):
-  index = 0
-  for score in scores:
-    Score.objects.create(review_id = review, grade = int(score), attribute_id = attributes[index])
-    index += 1
+def _add_score_models(scores, attributes, review):
+    index = 0
+    for score in scores:
+        Score.objects.create(review_id = review, grade = int(score), attribute_id = attributes[index])
+        index += 1

@@ -2,9 +2,13 @@
 
 {% block body_block %}
 
-<h4 class="list-group-item-heading ">RatedObjectName: {{ ratedobject.name }}</h4>
-<h2 class="list-group-item-heading ">RatedObjectId: {{ ratedobject.id }}</h2>
-<h1 class="list-group-item-heading ">RatedModelId: {{ ratedobject.rated_model_id}}</h1>
+<p>Rated Object Name: {{ ratedobject.name }}</p>
+<p>Rated Object Id: {{ ratedobject.id }}</p>
+<p>Rated Model Id: {{ ratedobject.ratedmodel_id}}</p>
+<p>
+    Description:
+    {{ ratedobject.description }}
+</p>
 
 {% if current_user.is_authenticated %}
 <!-- Button trigger modal -->
