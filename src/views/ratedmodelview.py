@@ -34,7 +34,7 @@ def show(request, ratedmodel_name, ratedmodel_id):
     ratedobjects = RatedObject.objects.filter(ratedmodel_id=ratedmodel_id).order_by("-created_at")
     ratedmodel = RatedModel.objects.get(pk=ratedmodel_id)
     attributes = ratedmodel.attribute_set.all()
-    return render(request, 'ratedmodel.html', {"ratedobjects": ratedobjects, "current_user": current_user, "ratedmodel": ratedmodel, "attributes": attributes})
+    return render(request, 'ratedmodel_show.html', {"ratedobjects": ratedobjects, "current_user": current_user, "ratedmodel": ratedmodel, "attributes": attributes})
 
 #create new models
 def create(request):

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+<h1>{{ ratedmodel.name }}</h1>
+
+<p>
+    Description:
+    {{ ratedmodel.description }}
+</p>
+
+<p>
+    Attributes:
+    <ul>
+    {% for attribute in attributes %}
+    <li>{{ attribute.name }}</li>
+    {% endfor %}
+    </ul>
+</p>
+
+<ul class="list-group">
+    {% load app_filters %}
+    {% for ratedobject in ratedobjects %}
+    <li class="list-group-item">
+        <div class="row">
+            <div class ="col-xs-3">
+                <img style="width:100%"src="http://placehold.it/130x130">
+            </div>
+            <div class ="col-xs-9">
+                <p><a href="{{ ratedobject.name|removewhitespace }}/{{ ratedobject.id }}">{{ ratedobject.name }}</a></p>
+                {{ ratedobject.description }}
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+
+{% if current_user.is_authenticated %}
+<a href="create">
+    <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span>
+        Add a {{ ratedmodel.name }} item
+    </button>
+</a>
+{% endif %}
+
+{% endblock %}

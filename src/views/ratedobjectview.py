@@ -18,7 +18,7 @@ class RatedObjectForm(forms.ModelForm):
 def show(request, ratedmodel_name, ratedmodel_id, ratedobject_name, ratedobject_id):
     current_user = request.user
     ratedobject = RatedObject.objects.get(pk=ratedobject_id)
-    return render(request, 'ratedobject.html', {"ratedobject": ratedobject, "current_user": current_user})
+    return render(request, 'ratedobject_show.html', {"ratedobject": ratedobject, "current_user": current_user})
 
 def create(request, ratedmodel_name, ratedmodel_id):
     context = RequestContext(request)
