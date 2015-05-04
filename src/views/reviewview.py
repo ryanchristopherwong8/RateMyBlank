@@ -26,16 +26,33 @@ def create(request, ratedmodel_name, ratedmodel_id, ratedobject_name, ratedobjec
         scores = request.POST.getlist('score')
         attributes = request.POST.getlist('attribute_id')
         _add_score_models(scores, attributes, review.id)
-        url = reverse('ratedobjects_show', kwargs={'ratedmodel_name' : ratedmodel_name, 'ratedmodel_id' : str(ratedmodel.id),
-            'ratedobject_name' : ratedobject_name, 'ratedobject_id' : ratedobject_id})
+        url = reverse('review_show', kwargs={'ratedmodel_name' : ratedmodel_name, 'ratedmodel_id' : ratedmodel_id,
+            'ratedobject_name' : ratedobject_name, 'ratedobject_id' : ratedobject_id, 'review_id' : review.id})
         return HttpResponseRedirect(url)
     else:
         current_user = request.user
         attributes = Attribute.objects.filter(ratedmodel = ratedmodel_id)
         return render_to_response('review_create.html', {"current_user": current_user, "attributes" : attributes}, context)
 
+def show(request, ratedmodel_name, ratedmodel_id, ratedobject_name, ratedobject_id, review_id):
+    current_user = request.user
+    review = Review.objects.get(pk = review_id)
+    attributes = Attribute.objects.filter(ratedmodel = ratedmodel_id)
+    scores = Score.objects.filter(review = review_id)
+    scoreList = _getScoreList(attributes, review_id)
+    return render(request, 'review_show.html', {"review": review, "current_user" : current_user,
+      "scoreList" : scoreList})
+
 def _add_score_models(scores, attributes, review):
     index = 0
     for score in scores:
         Score.objects.create(review_id = review, grade = int(score), attribute_id = attributes[index])
         index += 1
+
+
+def _getScoreList(attributes, review_id):
+  scoreList = []
+  for attribute in attributes:
+    score = Score.objects.get(review = review_id, attribute = attribute.id)
+    scoreList.append([attribute.name, attribute.id, score.grade, score.id])
+  return scoreList

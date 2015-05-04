@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+<h1 class="list-group-item-heading ">ReviewId: {{ review.id }}</h1>
+<h1 class="list-group-item-heading ">RatedObjectId: {{ review.ratedobject_id }}</h1>
+<h1 class="list-group-item-heading ">ReviewerId: {{ review.user_id }}</h1>
+
+<!--  item 0 = attribute.name,
+      item 1 = attribute.id,
+      item 2 = score.grade,
+      item 3 = score.id
+-->
+{% for item in scoreList %}
+    <li class="list-group-item">
+        <div class="row">
+            <div class ="col-xs-3">
+               <span>{{ item.0 }}</span>
+            </div>
+            <div class ="col-xs-3">
+              <span>{{ item.2 }}</span>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+
+{% endblock %}
