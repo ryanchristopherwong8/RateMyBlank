@@ -11,17 +11,16 @@
       item 2 = score.grade,
       item 3 = score.id
 -->
-{% for item in scoreList %}
+{% for score in scores %}
     <li class="list-group-item">
         <div class="row">
             <div class ="col-xs-3">
-               <span>{{ item.0 }}</span>
+               <span>{{ score.attribute.name }}</span>
             </div>
             <div class ="col-xs-3">
-              <span>{{ item.2 }}</span>
+              <span>{{ score.grade }}</span>
             </div>
         </div>
     </li>
     {% endfor %}
-
 {% endblock %}

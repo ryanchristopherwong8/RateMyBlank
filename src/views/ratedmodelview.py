@@ -12,7 +12,6 @@ from django.core.urlresolvers import reverse
 from django.forms.formsets import formset_factory
 
 class RatedModelForm(forms.ModelForm):
-    name = forms.CharField(max_length=200)
     class Meta:
         model = RatedModel
         fields = ('name', 'description')

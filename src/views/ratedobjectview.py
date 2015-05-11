@@ -4,6 +4,7 @@ from django import forms
 from django.template import RequestContext
 from src.models.ratedmodel import RatedModel
 from src.models.ratedobject import RatedObject
+from src.models.review import Review
 from datetime import datetime
 from django.utils.dateformat import DateFormat
 from django.http import HttpResponseRedirect, HttpResponse
@@ -17,13 +18,15 @@ class RatedObjectForm(forms.ModelForm):
 
 def show(request, ratedmodel_name, ratedmodel_id, ratedobject_name, ratedobject_id):
     current_user = request.user
-    ratedobject = RatedObject.objects.get(pk=ratedobject_id)
-    return render(request, 'ratedobject_show.html', {"ratedobject": ratedobject, "current_user": current_user})
+    ratedobject = RatedObject.objects.get(pk = ratedobject_id)
+    reviews = ratedobject.review_set.all()
+    return render(request, 'ratedobject_show.html', {"ratedobject": ratedobject, "reviews": reviews,
+        "current_user": current_user})
 
 def create(request, ratedmodel_name, ratedmodel_id):
     context = RequestContext(request)
     try:
-        ratedmodel = RatedModel.objects.get(pk=ratedmodel_id)
+        ratedmodel = RatedModel.objects.get(pk = ratedmodel_id)
     except RatedModel.DoesNotExist:
         return HttpResponse('<h1>Page was not found</h1>')
     if request.method == "POST":

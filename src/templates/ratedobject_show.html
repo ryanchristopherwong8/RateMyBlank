@@ -2,13 +2,44 @@
 
 {% block body_block %}
 
-<p>Rated Object Name: {{ ratedobject.name }}</p>
-<p>Rated Object Id: {{ ratedobject.id }}</p>
-<p>Rated Model Id: {{ ratedobject.ratedmodel_id}}</p>
+<h1>{{ ratedobject.name }}</h1>
 <p>
     Description:
     {{ ratedobject.description }}
 </p>
+{{ reviews|length }} reviews
+<ul class="list-group">
+    {% load app_filters %}
+    {% for review in reviews %}
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-xs-2">
+                {{ review.userprofile.user.username }}
+                <br />
+                {{ review.created_at|date:"m/d/y" }}
+            </div>
+            <div class="col-xs-10">
+                Description: {{ review.description }}
+
+                <p>
+                    {% for score in review.score_set.all %}
+                        <div class="row">
+                            <div class="col-xs-5">
+                                {{ score.attribute.name }}
+                            </div>
+                            <div class="col-xs-5">
+                                {{ score.grade }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </p>
+
+                <p>See <a href="review/{{ review.id }}">full review</a></p>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
 
 {% if current_user.is_authenticated %}
 <!-- Button trigger modal -->
@@ -22,3 +53,9 @@
 {% endif %}
 
 {% endblock %}
+
+<!--
+            <div class ="col-xs-9">
+                <p><a href="{{ ratedobject.name|removewhitespace }}/{{ ratedobject.id }}">{{ ratedobject.name }}</a></p>
+                {{ ratedobject.description }}
+            </div> -->
