@@ -60,7 +60,6 @@ def create(request):
                 url = reverse('ratedmodel_show', kwargs={'ratedmodel_name' : ratedmodel.name.replace(" ",""), 'ratedmodel_id' : str(ratedmodel.id)})
                 return HttpResponseRedirect(url)
         print(ratedmodel_form.errors)
-        print(attribute_formset.errors)
     else:
         ratedmodel_form = RatedModelForm()
     current_user = request.user
