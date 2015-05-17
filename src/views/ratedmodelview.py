@@ -9,9 +9,10 @@ from datetime import datetime
 from django.utils.dateformat import DateFormat
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.forms.formsets import formset_factory
+from django.forms.formsets import formset_factory, BaseFormSet
 
 class RatedModelForm(forms.ModelForm):
+    name = forms.CharField(error_messages={'required': 'This field is required!'})
     class Meta:
         model = RatedModel
         fields = ('name', 'description')
@@ -20,6 +21,12 @@ class AttributeForm(forms.ModelForm):
     class Meta:
         model = Attribute
         fields = ('name', )
+
+class RequiredFormSet(BaseFormSet):
+    def __init__(self, *args, **kwargs):
+        super(RequiredFormSet, self).__init__(*args, **kwargs)
+        for form in self.forms:
+            self.forms[0].empty_permitted = False
 
 #Show all
 def index(request):
@@ -38,7 +45,7 @@ def show(request, ratedmodel_name, ratedmodel_id):
 #create new models
 def create(request):
     context = RequestContext(request)
-    AttributeFormSet = formset_factory(AttributeForm)
+    AttributeFormSet = formset_factory(AttributeForm, formset=RequiredFormSet)
     if request.method == "POST":
         ratedmodel_form = RatedModelForm(request.POST)
         attribute_formset = AttributeFormSet(request.POST, request.FILES)
@@ -46,12 +53,14 @@ def create(request):
             if attribute_formset.is_valid():
                 ratedmodel = ratedmodel_form.save(commit=True)
                 for attribute_form in attribute_formset.forms:
-                    attribute = attribute_form.save(commit=False)
-                    attribute.ratedmodel_id = ratedmodel.id
-                    attribute.save()
+                    if attribute_form["name"].value():
+                        attribute = attribute_form.save(commit=False)
+                        attribute.ratedmodel_id = ratedmodel.id
+                        attribute.save()
                 url = reverse('ratedmodel_show', kwargs={'ratedmodel_name' : ratedmodel.name.replace(" ",""), 'ratedmodel_id' : str(ratedmodel.id)})
                 return HttpResponseRedirect(url)
         print(ratedmodel_form.errors)
+        print(attribute_formset.errors)
     else:
         ratedmodel_form = RatedModelForm()
     current_user = request.user

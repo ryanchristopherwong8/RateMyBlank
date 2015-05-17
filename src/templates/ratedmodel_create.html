@@ -17,13 +17,13 @@
     <label class="field-wrapper">
         Name:
         <div class="form-input">
-            {{ ratedmodel_form.name }}
+            {{ ratedmodel_form.name }} {{ ratedmodel_form.name.errors.as_text }}
         </div>
     </label>
     <label class="field-wrapper">
         Description:
         <div class="form-input">
-            {{ ratedmodel_form.description }}
+            {{ ratedmodel_form.description }} {{ ratedmodel_form.description.errors.as_text }}
         </div>
     </label>
     <div id="form-hidden-fields">
@@ -54,17 +54,11 @@
         </div>
     </div>
 
-    {% if ratedmodel_form.errors %}
-    <div id="form-error">ERRORS:
-        <ul id="form-error-list">
-            {% for i in ratedmodel_form.non_field_errors %}
-            <li class="form-error">
-                {{i}}
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
+    {% for errors in attribute_formset.errors %}
+        {% for error in errors.values %}
+            {{ error }}
+        {% endfor %}
+    {% endfor %}
 
     <input type="submit" value="Submit" />
 </form>
