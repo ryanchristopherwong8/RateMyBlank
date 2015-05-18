@@ -9,6 +9,7 @@ from datetime import datetime
 from django.utils.dateformat import DateFormat
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
+from django.db.models import Avg
 
 class RatedObjectForm(forms.ModelForm):
     name = forms.CharField(max_length=200)
@@ -19,7 +20,7 @@ class RatedObjectForm(forms.ModelForm):
 def show(request, ratedmodel_name, ratedmodel_id, ratedobject_name, ratedobject_id):
     current_user = request.user
     ratedobject = RatedObject.objects.get(pk = ratedobject_id)
-    reviews = ratedobject.review_set.all()
+    reviews = ratedobject.review_set.annotate(avg_grade = Avg('score__grade'))
     return render(request, 'ratedobject_show.html', {"ratedobject": ratedobject, "reviews": reviews,
         "current_user": current_user})
 

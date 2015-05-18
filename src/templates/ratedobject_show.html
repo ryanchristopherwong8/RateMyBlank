@@ -20,7 +20,6 @@
             </div>
             <div class="col-xs-10">
                 Description: {{ review.description }}
-
                 <p>
                     {% for score in review.score_set.all %}
                         <div class="row">
@@ -32,6 +31,14 @@
                             </div>
                         </div>
                     {% endfor %}
+                        <div style="font-weight: bold" class="row">
+                            <div class="col-xs-4 col-xs-offset-1 ">
+                                Overall Rating:
+                            </div>
+                            <div class="col-xs-5">
+                                {{ review.avg_grade|floatformat:1 }}
+                            </div>
+                        </div>
                 </p>
 
                 <p>See <a href="review/{{ review.id }}">full review</a></p>
