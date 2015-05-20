@@ -4,6 +4,7 @@ from django import forms
 from django.template import RequestContext
 from src.models.ratedmodel import RatedModel
 from src.models.ratedobject import RatedObject
+from src.models.attribute import Attribute
 from src.models.review import Review
 from datetime import datetime
 from django.utils.dateformat import DateFormat
@@ -21,8 +22,10 @@ def show(request, ratedmodel_name, ratedmodel_id, ratedobject_name, ratedobject_
     current_user = request.user
     ratedobject = RatedObject.objects.get(pk = ratedobject_id)
     reviews = ratedobject.review_set.annotate(avg_grade = Avg('score__grade'))
-    return render(request, 'ratedobject_show.html', {"ratedobject": ratedobject, "reviews": reviews,
-        "current_user": current_user})
+    attributes = ratedobject.ratedmodel.attribute_set.filter(score__review__ratedobject_id = ratedobject_id).annotate(avg_grade = Avg('score__grade'))
+    overall_grade = list(ratedobject.review_set.aggregate(Avg('score__grade')).values())[0]
+    return render(request, 'ratedobject_show.html', {"ratedobject": ratedobject, "reviews": reviews, "attributes": attributes,
+        "overall_grade": overall_grade, "current_user": current_user})
 
 def create(request, ratedmodel_name, ratedmodel_id):
     context = RequestContext(request)

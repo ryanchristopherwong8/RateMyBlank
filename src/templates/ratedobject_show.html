@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block javascript %}
+<script src="{{STATIC_URL}}javascript/ratedobject_show.js"></script>
+{% endblock %}
+
 {% block body_block %}
 
 <h1>{{ ratedobject.name }}</h1>
@@ -7,6 +11,14 @@
     Description:
     {{ ratedobject.description }}
 </p>
+<h3>
+    {% for attribute in attributes %}
+        <div>
+            {{ attribute.name }}: {{ attribute.avg_grade|floatformat:1 }}
+        </div>
+    {% endfor %}
+    <div style="font-weight: bold">OVERALL RATING: {{ overall_grade|floatformat:1 }}</div>
+</h3>
 {{ reviews|length }} reviews
 <ul class="list-group">
     {% load app_filters %}
@@ -36,7 +48,7 @@
                                 Overall Rating:
                             </div>
                             <div class="col-xs-5">
-                                {{ review.avg_grade|floatformat:1 }}
+                                <span class="badge review-average" style="color: black">{{ review.avg_grade|floatformat:1 }}</span>
                             </div>
                         </div>
                 </p>
