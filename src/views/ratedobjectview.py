@@ -24,7 +24,7 @@ def show(request, ratedmodel_name, ratedmodel_id, ratedobject_name, ratedobject_
     reviews = ratedobject.review_set.annotate(avg_grade = Avg('score__grade'))
     attributes = ratedobject.ratedmodel.attribute_set.filter(score__review__ratedobject_id = ratedobject_id).annotate(avg_grade = Avg('score__grade'))
     overall_grade = list(ratedobject.review_set.aggregate(Avg('score__grade')).values())[0]
-    return render(request, 'ratedobject_show.html', {"ratedobject": ratedobject, "reviews": reviews, "attributes": attributes,
+    return render(request, 'ratedobject_show.html', {"ratedobject": ratedobject, "ratedmodel": ratedobject.ratedmodel, "reviews": reviews, "attributes": attributes,
         "overall_grade": overall_grade, "current_user": current_user})
 
 def create(request, ratedmodel_name, ratedmodel_id):

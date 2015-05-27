@@ -3,9 +3,9 @@ $(document).ready(function() {
        "scoreToHexFactor" : 102 // 2.5 * 102 is 255 (max)
     };
 
-    function renderReviewAverageColors() {
-        var reviewAverages = $(".review-average");
-        reviewAverages.each(function(index, element) {
+    function renderGradeColors() {
+        var aggregateGrades = $(".aggregate-grade");
+        aggregateGrades.each(function(index, element) {
             var score = $(element).text();
             var redHex = 255;
             var greenHex = 255;
@@ -22,5 +22,5 @@ $(document).ready(function() {
             }
         });
     }
-    renderReviewAverageColors();
+    renderGradeColors();
 });

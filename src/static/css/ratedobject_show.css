@@ -1,0 +1,59 @@
+.title-container {
+    display:inline-block;
+    margin: 8px 0;
+}
+
+.title {
+    font-size: 36px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0 0 -5px 0;
+}
+
+.overall-grade {
+    float: left;
+    font-weight: bold;
+    font-size: 24px;
+    color: black;
+    margin: 6px 0 0 0;
+}
+
+.aggregate-grade {
+    float: left;
+    color: black;
+}
+
+.overall-grade-label {
+    float: left;
+    font-size: 16px;
+    margin: 0 0 0 10px;
+}
+
+.bottom-content {
+    clear: both;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.object-attributes-container {
+    background-color: #F7F7F9;
+    margin: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #E1E1E8;
+
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+}
+
+.object-attribute-grade {
+    float: left;
+    margin: 0 8px;
+}
+
+.object-attribute-name {
+}

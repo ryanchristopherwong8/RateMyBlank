@@ -4,77 +4,96 @@
 <script src="{{STATIC_URL}}javascript/ratedobject_show.js"></script>
 {% endblock %}
 
-{% block body_block %}
-
-<h1>{{ ratedobject.name }}</h1>
-<p>
-    Description:
-    {{ ratedobject.description }}
-</p>
-<h3>
-    {% for attribute in attributes %}
-        <div>
-            {{ attribute.name }}: {{ attribute.avg_grade|floatformat:1 }}
-        </div>
-    {% endfor %}
-    <div style="font-weight: bold">OVERALL RATING: {{ overall_grade|floatformat:1 }}</div>
-</h3>
-{{ reviews|length }} reviews
-<ul class="list-group">
-    {% load app_filters %}
-    {% for review in reviews %}
-    <li class="list-group-item">
-        <div class="row">
-            <div class="col-xs-2">
-                {{ review.userprofile.user.username }}
-                <br />
-                {{ review.created_at|date:"m/d/y" }}
-            </div>
-            <div class="col-xs-10">
-                Description: {{ review.description }}
-                <p>
-                    {% for score in review.score_set.all %}
-                        <div class="row">
-                            <div class="col-xs-5">
-                                {{ score.attribute.name }}
-                            </div>
-                            <div class="col-xs-5">
-                                {{ score.grade }}
-                            </div>
-                        </div>
-                    {% endfor %}
-                        <div style="font-weight: bold" class="row">
-                            <div class="col-xs-4 col-xs-offset-1 ">
-                                Overall Rating:
-                            </div>
-                            <div class="col-xs-5">
-                                <span class="badge review-average" style="color: black">{{ review.avg_grade|floatformat:1 }}</span>
-                            </div>
-                        </div>
-                </p>
-
-                <p>See <a href="review/{{ review.id }}">full review</a></p>
-            </div>
-        </div>
-    </li>
-    {% endfor %}
-</ul>
-
-{% if current_user.is_authenticated %}
-<!-- Button trigger modal -->
-{% load app_filters %}
-<a href="review/create">
-    <button type="button" class="btn btn-default">
-        <span class="glyphicon glyphicon-plus"></span>
-        Add Review
-    </button>
-</a>
-{% endif %}
-
+{% block css %}
+<link rel="stylesheet" href="{{STATIC_URL}}css/ratedobject_show.css">
 {% endblock %}
 
-<!--
-            <div class ="col-xs-9">
-                <p><a href="{{ ratedobject.name|removewhitespace }}/{{ ratedobject.id }}">{{ ratedobject.name }}</a></p>
-                {{ ratedobject.description }}
-            </div> -->
+{% block body_block %}
+
+<div class="title-container">
+    {% load app_filters %}
+    <div class="title">{{ ratedobject.name }}</div>
+    <div class="parent-model"><a href="/{{ ratedmodel.name|removewhitespace }}/{{ ratedmodel.id }}">{{ ratedmodel.name }}</a></div>
+</div>
+<div class="overall-grade-container">
+    <div class="badge overall-grade aggregate-grade">
+        {% if overall_grade %}
+        {{ overall_grade|floatformat:1 }}
+        {% else %}
+        -
+        {% endif %}
+    </div>
+    <div class="overall-grade-label">
+        Overall<br>Grade
+    </div>
+</div>
+<div class="bottom-content">
+    <hr>
+    <div class="description">{{ ratedobject.description }}</div>
+    <ul class="object-attributes-container">
+        {% for attribute in attributes %}
+            <li>
+                <div class="object-attribute-grade badge aggregate-grade">
+                    {{ attribute.avg_grade|floatformat:1 }}
+                </div>
+                <div class="object-attribute-name">
+                    {{ attribute.name }}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    {{ reviews|length }} reviews
+    <ul class="list-group">
+        {% load app_filters %}
+        {% for review in reviews %}
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-xs-2">
+                    {{ review.userprofile.user.username }}
+                    <br />
+                    {{ review.created_at|date:"m/d/y" }}
+                </div>
+                <div class="col-xs-10">
+                    Description: {{ review.description }}
+                    <p>
+                        {% for score in review.score_set.all %}
+                            <div class="row">
+                                <div class="col-xs-5">
+                                    {{ score.attribute.name }}
+                                </div>
+                                <div class="col-xs-5">
+                                    {{ score.grade }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                            <div style="font-weight: bold" class="row">
+                                <div class="col-xs-4 col-xs-offset-1 ">
+                                    Overall Rating:
+                                </div>
+                                <div class="col-xs-5">
+                                    <span class="badge review-average aggregate-grade">{{ review.avg_grade|floatformat:1 }}</span>
+                                </div>
+                            </div>
+                    </p>
+
+                    <p>See <a href="review/{{ review.id }}">full review</a></p>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+    {% if current_user.is_authenticated %}
+    <!-- Button trigger modal -->
+    {% load app_filters %}
+    <a href="review/create">
+        <button type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus"></span>
+            Add Review
+        </button>
+    </a>
+    {% endif %}
+
+</div>
+
+{% endblock %}
