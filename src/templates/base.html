@@ -19,7 +19,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-default">
+    <nav class="navbar">
         <div class ="col-xs-offset-3 col-xs-6">
         <div class="container-fluid">
             <div >
@@ -29,7 +29,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_authenticated %}
-                    <li class="navbar-text">Logged in as <span style="color: #33CCCC">{{ current_user.username }}</span></li>
+                    <li class="navbar-text">Logged in as <span style="color: #464646">{{ current_user.username }}</span></li>
                     <li><a href="/logout/">Logout</a></li>
                     {% else %}
                     <li><a href="/signup/">Sign Up</a></li>
@@ -41,11 +41,9 @@
         </div>
     </nav>
 
-    <div class="col-xs-offset-3 col-xs-6">
-        <div id="main-container">
-            <div id="main-content">
-                {% block body_block %}{% endblock %}
-            </div>
+    <div id="main-container">
+        <div id="main-content">
+            {% block body_block %}{% endblock %}
         </div>
     </div>
 

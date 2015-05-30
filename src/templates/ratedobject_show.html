@@ -12,11 +12,11 @@
 
 <div class="title-container">
     {% load app_filters %}
-    <div class="title">{{ ratedobject.name }}</div>
+    <h1>{{ ratedobject.name }}</h1>
     <div class="parent-model"><a href="/{{ ratedmodel.name|removewhitespace }}/{{ ratedmodel.id }}">{{ ratedmodel.name }}</a></div>
 </div>
 <div class="overall-grade-container">
-    <div class="badge overall-grade aggregate-grade">
+    <div class="overall-grade-shape overall-grade aggregate-grade">
         {% if overall_grade %}
         {{ overall_grade|floatformat:1 }}
         {% else %}
@@ -32,8 +32,8 @@
     <div class="description">{{ ratedobject.description }}</div>
     <ul class="object-attributes-container">
         {% for attribute in attributes %}
-            <li>
-                <div class="object-attribute-grade badge aggregate-grade">
+            <li class="object-attribute-container">
+                <div class="object-attribute-grade grade-shape aggregate-grade">
                     {{ attribute.avg_grade|floatformat:1 }}
                 </div>
                 <div class="object-attribute-name">

@@ -3,29 +3,37 @@
     margin: 8px 0;
 }
 
-.title {
+h1 {
     font-size: 36px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    margin: 0 0 -5px 0;
+    margin: 0 0 0 0;
 }
 
 .overall-grade {
-    float: left;
+    padding-left: 9px;
+    padding-top: 7px;
     font-weight: bold;
     font-size: 24px;
     color: black;
-    margin: 6px 0 0 0;
 }
 
-.aggregate-grade {
-    float: left;
-    color: black;
+.overall-grade-shape {
+    width: 50px;
+    height: 50px;
+    -moz-border-radius: 25px; 
+    -webkit-border-radius: 25px; 
+    border-radius: 25px;
 }
 
 .overall-grade-label {
     float: left;
     font-size: 16px;
-    margin: 0 0 0 10px;
+    margin: 3px 0 0 10px;
+}
+
+.aggregate-grade {
+    float: left;
+    color: black;
 }
 
 .bottom-content {
@@ -39,21 +47,39 @@ ul {
 .object-attributes-container {
     background-color: #F7F7F9;
     margin: 8px;
-    padding: 8px 12px;
+    padding: 0px 6px;
     border-radius: 6px;
     border-style: solid;
     border-width: 2px;
     border-color: #E1E1E8;
+    height: 105px;
 
-    -webkit-column-count: 2;
-    -moz-column-count: 2;
-    column-count: 2;
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+}
+
+.object-attribute-container {
+    margin: 8px 0;
 }
 
 .object-attribute-grade {
     float: left;
-    margin: 0 8px;
+    margin: 0px 8px;
+    padding-left: 2px;
+    padding-top: 2px;
 }
 
 .object-attribute-name {
+    padding-top: 2px;
+}
+
+.grade-shape {
+    float: left;
+    width: 26px;
+    height: 26px;
+    -moz-border-radius: 13px; 
+    -webkit-border-radius: 13px; 
+    border-radius: 13px;
+    border: 1px solid #C8C8C8;
 }
