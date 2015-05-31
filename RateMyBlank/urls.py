@@ -5,6 +5,7 @@ from src.views import userview
 from src.views import ratedmodelview
 from src.views import ratedobjectview
 from src.views import reviewview
+from src.views import tagview
 
 urlpatterns = patterns('',
     # Examples:
@@ -13,6 +14,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', ratedmodelview.index, name='index'),
+    url(r'^search/$', tagview.index, name='tagview_index'),
     url(r'^ratedmodel/create/$', ratedmodelview.create, name='ratedmodel_create'),
     url(r'^(?P<ratedmodel_name>[-\w]+)/(?P<ratedmodel_id>[-\w]+)/$', ratedmodelview.show, name='ratedmodel_show'),
     url(r'^(?P<ratedmodel_name>[-\w]+)/(?P<ratedmodel_id>[-\w]+)/(?P<ratedobject_name>[-\w]+)/(?P<ratedobject_id>[-\w]+)/$', ratedobjectview.show, name='ratedobject_show'),
