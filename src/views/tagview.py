@@ -13,3 +13,4 @@ def index(request):
 #Currently works however, we need to redirect url with search in url
 #Need to change code so that after searching you can click models
 #Depending on if there is a result than show if not Show different URL " Nothing Search " look at rated object view
+#TEST
