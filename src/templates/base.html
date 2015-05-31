@@ -26,21 +26,18 @@
             <div >
                 <ul class="nav navbar-nav">
                     <li><a href="/">RateMy</a></li>
-                    <li><a href="#">Profile</a></li>
+                    <li>
+                        <form class="form-search navbar-form" action="/search/" method="post">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control" placeholder="Search">
+                                <span class="input-group-btn">
+                                    <button type="submit" value ="Search" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+                                </span>
+                            </div>
+                        </form>
+                    <li>
                 </ul>
-
-                <div class="col-sm-6 col-md-6">
-                    <form class="form-search navbar-form" action="/search/" method="post">
-                        {% csrf_token %}
-                        <div class="input-group">
-                            <input type="text" name="search" class="form-control" placeholder="Search">
-                            <span class="input-group-btn">
-                                <button type="submit" value ="Search" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
-                            </span>
-                        </div>
-                    </form>
-                </div>
-
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_authenticated %}
                     <li class="navbar-text">Logged in as <span style="color: #464646">{{ current_user.username }}</span></li>
