@@ -8,8 +8,10 @@ from src.models.attribute import Attribute
 from datetime import datetime
 from django.utils.dateformat import DateFormat
 from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django.forms.formsets import formset_factory, BaseFormSet
+from django.db.models import Avg
 
 class RatedModelForm(forms.ModelForm):
     name = forms.CharField(error_messages={'required': 'This field is required!'})
@@ -37,13 +39,15 @@ def index(request):
 #Show one
 def show(request, ratedmodel_name, ratedmodel_id):
     current_user = request.user
-    ratedobjects = RatedObject.objects.filter(ratedmodel_id=ratedmodel_id).order_by("-created_at")
     ratedmodel = RatedModel.objects.get(pk=ratedmodel_id)
+    ratedobjects = RatedObject.objects.filter(ratedmodel_id=ratedmodel_id).order_by("-created_at").annotate(overall_grade = Avg('review__score__grade'))
     attributes = ratedmodel.attribute_set.all()
     return render(request, 'ratedmodel_show.html', {"ratedobjects": ratedobjects, "current_user": current_user, "ratedmodel": ratedmodel, "attributes": attributes})
 
 #create new models
 def create(request):
+    if not request.user.is_authenticated():
+        return redirect("login")
     context = RequestContext(request)
     AttributeFormSet = formset_factory(AttributeForm, formset=RequiredFormSet)
     if request.method == "POST":

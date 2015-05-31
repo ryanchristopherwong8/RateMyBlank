@@ -9,6 +9,7 @@ from src.models.review import Review
 from datetime import datetime
 from django.utils.dateformat import DateFormat
 from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django.db.models import Avg
 
@@ -28,6 +29,8 @@ def show(request, ratedmodel_name, ratedmodel_id, ratedobject_name, ratedobject_
         "overall_grade": overall_grade, "current_user": current_user})
 
 def create(request, ratedmodel_name, ratedmodel_id):
+    if not request.user.is_authenticated():
+        return redirect("login")
     context = RequestContext(request)
     try:
         ratedmodel = RatedModel.objects.get(pk = ratedmodel_id)
