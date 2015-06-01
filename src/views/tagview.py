@@ -1,16 +1,17 @@
 from django.shortcuts import render
 from src.models.ratedmodel import RatedModel
-
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 
 #Show all
-def index(request):
+def create(request):
     if request.method == "POST":
-      searchTag = request.POST['search']
+      tag_name = request.POST['search']
       current_user = request.user
-      ratedmodels = RatedModel.objects.filter(tags__slug = searchTag)
-      return render(request, 'index.html', {"ratedmodels": ratedmodels, "current_user": current_user})
+      url = reverse('tagview_index', kwargs={'tag_name' : tag_name})
+      return HttpResponseRedirect(url)
 
-#Currently works however, we need to redirect url with search in url
-#Need to change code so that after searching you can click models
-#Depending on if there is a result than show if not Show different URL " Nothing Search " look at rated object view
-#TEST
+def index(request, tag_name):
+    current_user = request.user
+    ratedmodels = RatedModel.objects.filter(tags__slug = tag_name)
+    return render(request, 'index.html', {"ratedmodels": ratedmodels, "current_user": current_user})
