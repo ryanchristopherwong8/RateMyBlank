@@ -1,3 +1,7 @@
+/***********
+Base
+***********/
+
 html, body {
     background-color: #EFF0F1;
     height: 100%; 
@@ -52,4 +56,117 @@ a, a:active, a:hover {
 .attribute {
     padding: 3px;
     background-color: #E8E8E8;
+}
+
+/***********
+Shared Styles
+***********/
+
+hr {
+    margin-top: 60px;
+}
+
+.grade-badge {
+}
+
+.aggregate-grade {
+    float: left;
+    color: black;
+}
+
+.inline {
+    float: left;
+}
+
+/***********
+Model Show
+***********/
+
+.object-container {
+    clear: both;
+}
+
+/***********
+Object Show
+***********/
+
+.title-container {
+    display:inline-block;
+    margin: 8px 0;
+}
+
+.title-container > h1 {
+    font-size: 36px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0 0 0 0;
+}
+
+.overall-grade {
+    padding-left: 9px;
+    padding-top: 7px;
+    font-weight: bold;
+    font-size: 24px;
+    color: black;
+}
+
+.overall-grade-circle {
+    width: 50px;
+    height: 50px;
+    -moz-border-radius: 25px; 
+    -webkit-border-radius: 25px; 
+    border-radius: 25px;
+}
+
+.overall-grade-label {
+    float: left;
+    font-size: 16px;
+    margin: 3px 0 0 10px;
+}
+
+.bottom-content {
+    clear: both;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.object-attributes-container {
+    background-color: #F7F7F9;
+    margin: 8px;
+    padding: 0px 6px;
+    border-radius: 6px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #E1E1E8;
+    height: 105px;
+
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+}
+
+.object-attribute-container {
+    margin: 8px 0;
+}
+
+.object-attribute-grade {
+    float: left;
+    margin: 0px 8px;
+    padding-left: 2px;
+    padding-top: 2px;
+}
+
+.object-attribute-name {
+    padding-top: 2px;
+}
+
+.grade-circle {
+    float: left;
+    width: 26px;
+    height: 26px;
+    -moz-border-radius: 13px; 
+    -webkit-border-radius: 13px; 
+    border-radius: 13px;
+    border: 1px solid #C8C8C8;
 }

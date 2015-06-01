@@ -1,13 +1,5 @@
 {% extends 'base.html' %}
 
-{% block javascript %}
-<script src="{{STATIC_URL}}javascript/ratedobject_show.js"></script>
-{% endblock %}
-
-{% block css %}
-<link rel="stylesheet" href="{{STATIC_URL}}css/ratedobject_show.css">
-{% endblock %}
-
 {% block body_block %}
 
 <div class="title-container">
@@ -16,7 +8,7 @@
     <div class="parent-model"><a href="/{{ ratedmodel.name|removewhitespace }}/{{ ratedmodel.id }}">{{ ratedmodel.name }}</a></div>
 </div>
 <div class="overall-grade-container">
-    <div class="overall-grade-shape overall-grade aggregate-grade">
+    <div class="overall-grade-circle overall-grade aggregate-grade">
         {% if overall_grade %}
         {{ overall_grade|floatformat:1 }}
         {% else %}
@@ -27,13 +19,13 @@
         Overall<br>Grade
     </div>
 </div>
+<hr>
 <div class="bottom-content">
-    <hr>
     <div class="description">{{ ratedobject.description }}</div>
     <ul class="object-attributes-container">
         {% for attribute in attributes %}
             <li class="object-attribute-container">
-                <div class="object-attribute-grade grade-shape aggregate-grade">
+                <div class="object-attribute-grade grade-circle aggregate-grade">
                     {{ attribute.avg_grade|floatformat:1 }}
                 </div>
                 <div class="object-attribute-name">
@@ -71,7 +63,7 @@
                                     Overall Rating:
                                 </div>
                                 <div class="col-xs-5">
-                                    <span class="badge review-average aggregate-grade">{{ review.avg_grade|floatformat:1 }}</span>
+                                    <span class="badge grade-badge aggregate-grade">{{ review.avg_grade|floatformat:1 }}</span>
                                 </div>
                             </div>
                     </p>

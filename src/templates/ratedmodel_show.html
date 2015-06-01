@@ -27,8 +27,22 @@
                 <img style="width:100%"src="http://placehold.it/200x200">
             </div>
             <div class ="col-xs-9">
-                <p><a href="{{ ratedobject.name|removewhitespace }}/{{ ratedobject.id }}">{{ ratedobject.name }}</a></p>
-                {{ ratedobject.description }}
+                <div class="object-container">
+                    <div class="object-name inline">
+                        <a href="{{ ratedobject.name|removewhitespace }}/{{ ratedobject.id }}">{{ ratedobject.name }}</a>
+                    </div>
+                    <div style="margin-left: 10px" class="badge grade-badge aggregate-grade inline">
+                        {% if ratedobject.overall_grade %}
+                        {{ ratedobject.overall_grade|floatformat:1 }}
+                        {% else %}
+                        -
+                        {% endif %}
+                    </div>
+                    <br>
+                    <div class="object-description">
+                        {{ ratedobject.description }}
+                    </div>
+                </div>
             </div>
         </div>
     </li>

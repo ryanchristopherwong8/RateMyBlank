@@ -11,10 +11,10 @@ from src.models.attribute import Attribute
 from datetime import datetime
 from django.utils.dateformat import DateFormat
 from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django import forms
 from django.forms.formsets import formset_factory
-import pdb
 
 class ReviewForm(forms.ModelForm):
     class Meta:
@@ -30,6 +30,8 @@ class ScoreForm(forms.ModelForm):
 
 #create new models
 def create(request, ratedmodel_name, ratedmodel_id, ratedobject_name, ratedobject_id):
+    if not request.user.is_authenticated():
+        return redirect("login")
     context = RequestContext(request)
     ScoreFormSet = formset_factory(ScoreForm, extra=0)
     if request.method == "POST":
