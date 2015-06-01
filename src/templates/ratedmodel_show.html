@@ -2,10 +2,21 @@
 
 {% block body_block %}
 
-<h1>{{ ratedmodel.name }}</h1>
+<div class="title-container">
+    <h1>{{ ratedmodel.name }}</h1>
+    {% if current_user.userprofile.id == ratedmodel.creator_id %}
+    <div class="edit-model">
+        <a href="edit">
+            <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-pencil"></span>
+                Edit
+            </button>
+        </a>
+    </div>
+    {% endif %}
+</div>
 
 <p>
-    Description:
     {{ ratedmodel.description }}
 </p>
 

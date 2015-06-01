@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+<h1>Add a Page</h1>
+
+<form class="form-horizontal" method="post" action="">
+    {% csrf_token %}
+    <label class="field-wrapper">
+        Name:
+        <div class="form-input">
+            {{ ratedmodel_form.name }} {{ ratedmodel_form.name.errors.as_text }}
+        </div>
+    </label>
+    <label class="field-wrapper">
+        Description:
+        <div class="form-input">
+            {{ ratedmodel_form.description }} {{ ratedmodel_form.description.errors.as_text }}
+        </div>
+    </label>
+
+    <input type="submit" value="Submit" />
+</form>
+
+{% endblock %}

@@ -7,3 +7,4 @@ class Score(models.Model):
     review = models.ForeignKey(Review, null=True)
     grade = models.DecimalField(max_digits=2, decimal_places=1)
     attribute = models.ForeignKey(Attribute, null=True)
+    is_deleted = models.BooleanField(default=False)

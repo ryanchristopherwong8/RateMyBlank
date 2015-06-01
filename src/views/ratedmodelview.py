@@ -55,7 +55,9 @@ def create(request):
         attribute_formset = AttributeFormSet(request.POST, request.FILES)
         if ratedmodel_form.is_valid():
             if attribute_formset.is_valid():
-                ratedmodel = ratedmodel_form.save(commit=True)
+                ratedmodel = ratedmodel_form.save(commit=False)
+                ratedmodel.creator_id = request.user.userprofile.id
+                ratedmodel.save()
                 for attribute_form in attribute_formset.forms:
                     if attribute_form["name"].value():
                         attribute = attribute_form.save(commit=False)
@@ -69,3 +71,24 @@ def create(request):
     current_user = request.user
     return render_to_response('ratedmodel_create.html', {"current_user": current_user, "ratedmodel_form": ratedmodel_form, 'attribute_formset': AttributeFormSet()}, context)
 
+def edit(request, ratedmodel_name, ratedmodel_id):
+    if not request.user.is_authenticated():
+        return redirect("login")
+    ratedmodel = RatedModel.objects.get(pk=ratedmodel_id)
+    if request.user.userprofile.id != ratedmodel.creator_id:
+        url = reverse('ratedmodel_show', kwargs={'ratedmodel_name' : ratedmodel_name, 'ratedmodel_id' : ratedmodel_id})
+        return HttpResponseRedirect(url)
+    context = RequestContext(request)
+    if request.method == "POST":
+        ratedmodel_form = RatedModelForm(request.POST)
+        if ratedmodel_form.is_valid():
+            ratedmodel.name = ratedmodel_form["name"].value()
+            ratedmodel.description = ratedmodel_form["description"].value()
+            ratedmodel.save()
+            url = reverse('ratedmodel_show', kwargs={'ratedmodel_name' : ratedmodel_name, 'ratedmodel_id' : ratedmodel_id})
+            return HttpResponseRedirect(url)
+        print(ratedmodel_form.errors)
+    else:
+        ratedmodel_form = RatedModelForm(instance = ratedmodel)
+    current_user = request.user
+    return render_to_response('ratedmodel_edit.html', {"ratedmodel": ratedmodel, "current_user": current_user, "ratedmodel_form": ratedmodel_form}, context)

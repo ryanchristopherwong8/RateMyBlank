@@ -12,6 +12,10 @@ a, a:active, a:hover {
     text-decoration: none;
 }
 
+h1 {
+    display: inline;
+}
+
 .navbar {
 	margin-bottom: 0;
 	background-color: #EFF0F1;
@@ -86,12 +90,15 @@ Model Show
     clear: both;
 }
 
+.edit-model {
+    float: right;
+}
+
 /***********
 Object Show
 ***********/
 
 .title-container {
-    display:inline-block;
     margin: 8px 0;
 }
 

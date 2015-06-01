@@ -41,6 +41,7 @@ def create(request, ratedmodel_name, ratedmodel_id):
         if ratedobject_form.is_valid():
             ratedobject = ratedobject_form.save(commit=False)
             ratedobject.ratedmodel_id = ratedmodel_id
+            ratedobject.creator_id = request.user.userprofile.id
             ratedobject.save()
             url = reverse('ratedobject_show', kwargs={'ratedmodel_name' : ratedmodel_name, 'ratedmodel_id' : ratedmodel_id,
                 'ratedobject_name' : ratedobject.name.replace(" ", ""), 'ratedobject_id' : str(ratedobject.id)})
