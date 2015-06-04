@@ -51,3 +51,27 @@ def create(request, ratedmodel_name, ratedmodel_id):
         ratedobject_form = RatedObjectForm()
     current_user = request.user
     return render_to_response('ratedobject_create.html', {"current_user": current_user, "ratedobject_form": ratedobject_form, "ratedmodel": ratedmodel}, context)
+
+def edit(request, ratedmodel_name, ratedmodel_id, ratedobject_name, ratedobject_id):
+    if not request.user.is_authenticated():
+        return redirect("login")
+    ratedobject = RatedObject.objects.get(pk=ratedobject_id)
+    if request.user.userprofile.id != ratedobject.creator_id:
+        url = reverse('ratedobject_show', kwargs={'ratedmodel_name' : ratedmodel_name, 'ratedmodel_id' : ratedmodel_id,
+                'ratedobject_name' : ratedobject_name, 'ratedobject_id' : ratedobject_id})
+        return HttpResponseRedirect(url)
+    context = RequestContext(request)
+    if request.method == "POST":
+        ratedobject_form = RatedObjectForm(request.POST)
+        if ratedobject_form.is_valid():
+            ratedobject.name = ratedobject_form["name"].value()
+            ratedobject.description = ratedobject_form["description"].value()
+            ratedobject.save()
+            url = reverse('ratedobject_show', kwargs={'ratedmodel_name' : ratedmodel_name, 'ratedmodel_id' : ratedmodel_id,
+                'ratedobject_name' : ratedobject_name, 'ratedobject_id' : ratedobject_id})
+            return HttpResponseRedirect(url)
+        print(ratedobject_form.errors)
+    else:
+        ratedobject_form = RatedObjectForm(instance = ratedobject)
+    current_user = request.user
+    return render_to_response('ratedobject_edit.html', {"current_user": current_user, "ratedobject_form": ratedobject_form, "ratedobject": ratedobject}, context)

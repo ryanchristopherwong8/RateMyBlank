@@ -9,32 +9,15 @@
     <label class="field-wrapper">
         Name:
         <div class="form-input">
-            {{ ratedobject_form.name }}
+            {{ ratedobject_form.name }} {{ ratedobject_form.name.errors.as_text }}
         </div>
     </label>
     <label class="field-wrapper">
         Description:
         <div class="form-input">
-            {{ ratedobject_form.description }}
+            {{ ratedobject_form.description }} {{ ratedobject_form.description.errors.as_text }}
         </div>
     </label>
-    <div id="form-hidden-fields">
-        {% for hidden in form.hidden_fields %}
-        {{ hidden }}
-        {% endfor %}
-    </div>
-
-    {% if ratedobject_form.errors %}
-    <div id="form-error">ERRORS:
-        <ul id="form-error-list">
-            {% for i in ratedobject_form.non_field_errors %}
-            <li class="form-error">
-                {{i}}
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
 
     <input type="submit" value="Submit" />
 </form>

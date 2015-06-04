@@ -27,8 +27,9 @@ urlpatterns = patterns('',
     url(r'^(?P<ratedmodel_name>[-\w]+)/(?P<ratedmodel_id>[-\w]+)/edit$', ratedmodelview.edit, name='ratedmodel_edit'),
 
     # Rated Object
-    url(r'^(?P<ratedmodel_name>[-\w]+)/(?P<ratedmodel_id>[-\w]+)/(?P<ratedobject_name>[-\w]+)/(?P<ratedobject_id>[-\w]+)/$', ratedobjectview.show, name='ratedobject_show'),
     url(r'^(?P<ratedmodel_name>[-\w]+)/(?P<ratedmodel_id>[-\w]+)/create/$', ratedobjectview.create, name='ratedobject_create'),
+    url(r'^(?P<ratedmodel_name>[-\w]+)/(?P<ratedmodel_id>[-\w]+)/(?P<ratedobject_name>[-\w]+)/(?P<ratedobject_id>[-\w]+)/$', ratedobjectview.show, name='ratedobject_show'),
+    url(r'^(?P<ratedmodel_name>[-\w]+)/(?P<ratedmodel_id>[-\w]+)/(?P<ratedobject_name>[-\w]+)/(?P<ratedobject_id>[-\w]+)/edit$', ratedobjectview.edit, name='ratedobject_edit'),
 
     # Review
     url(r'^(?P<ratedmodel_name>[-\w]+)/(?P<ratedmodel_id>[-\w]+)/(?P<ratedobject_name>[-\w]+)/(?P<ratedobject_id>[-\w]+)/review/create/$', reviewview.create, name = 'review_create'),

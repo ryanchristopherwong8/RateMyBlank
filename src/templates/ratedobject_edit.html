@@ -2,28 +2,22 @@
 
 {% block body_block %}
 
-<h1>Edit {{ ratedmodel.name }}</h1>
+<h1>Edit {{ ratedobject.name }}</h1>
 
 <form class="form-horizontal" method="post" action="">
     {% csrf_token %}
     <label class="field-wrapper">
         Name:
         <div class="form-input">
-            {{ ratedmodel_form.name }} {{ ratedmodel_form.name.errors.as_text }}
+            {{ ratedobject_form.name }} {{ ratedobject_form.name.errors.as_text }}
         </div>
     </label>
     <label class="field-wrapper">
         Description:
         <div class="form-input">
-            {{ ratedmodel_form.description }} {{ ratedmodel_form.description.errors.as_text }}
+            {{ ratedobject_form.description }} {{ ratedobject_form.description.errors.as_text }}
         </div>
     </label>
-
-    {% for errors in attribute_formset.errors %}
-        {% for error in errors.values %}
-            {{ error }}
-        {% endfor %}
-    {% endfor %}
 
     <input type="submit" value="Submit" />
 </form>

@@ -5,6 +5,16 @@
 <div class="title-container">
     {% load app_filters %}
     <h1>{{ ratedobject.name }}</h1>
+    {% if current_user.userprofile.id == ratedobject.creator_id %}
+    <div class="edit-item edit-object">
+        <a href="edit">
+            <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-pencil"></span>
+                Edit
+            </button>
+        </a>
+    </div>
+    {% endif %}
     <div class="parent-model"><a href="/{{ ratedmodel.name|removewhitespace }}/{{ ratedmodel.id }}">{{ ratedmodel.name }}</a></div>
 </div>
 <div class="overall-grade-container">
@@ -46,7 +56,7 @@
                     {{ review.created_at|date:"m/d/y" }}
                 </div>
                 <div class="col-xs-10">
-                    Description: {{ review.description }}
+                    {{ review.description }}
                     <p>
                         {% for score in review.score_set.all %}
                             <div class="row">
