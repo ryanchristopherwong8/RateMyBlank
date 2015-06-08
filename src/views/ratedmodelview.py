@@ -58,6 +58,8 @@ def create(request):
                 ratedmodel = ratedmodel_form.save(commit=False)
                 ratedmodel.creator_id = request.user.userprofile.id
                 ratedmodel.save()
+                tag_title = ratedmodel.name.lower()
+                ratedmodel.tags.add(tag_title, *tag_title.split(' '))
                 for attribute_form in attribute_formset.forms:
                     if attribute_form["name"].value():
                         attribute = attribute_form.save(commit=False)

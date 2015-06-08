@@ -13,5 +13,5 @@ def create(request):
 
 def index(request, tag_name):
     current_user = request.user
-    ratedmodels = RatedModel.objects.filter(tags__slug = tag_name)
+    ratedmodels = RatedModel.objects.filter(tags__name__in = [tag_name.lower()])
     return render(request, 'index.html', {"ratedmodels": ratedmodels, "current_user": current_user})
