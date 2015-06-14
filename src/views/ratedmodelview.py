@@ -12,12 +12,20 @@ from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django.forms.formsets import formset_factory, BaseFormSet
 from django.db.models import Avg
+from src.helpers.application_helper import strip_non_alphanum
 
 class RatedModelForm(forms.ModelForm):
     name = forms.CharField(error_messages={'required': 'This field is required!'})
     class Meta:
         model = RatedModel
         fields = ('name', 'description')
+    def clean(self):
+        name = self.cleaned_data['name']
+        stripped_name = strip_non_alphanum(name)
+        model_check = RatedModel.objects.filter(name_key=stripped_name)
+        if model_check:
+            raise forms.ValidationError({'name': ["A page already exists with a similar name. Please choose another name.",]})
+        return self.cleaned_data
 
 class AttributeForm(forms.ModelForm):
     class Meta:
@@ -33,14 +41,14 @@ class RequiredFormSet(BaseFormSet):
 #Show all
 def index(request):
     current_user = request.user
-    ratedmodels = RatedModel.objects.order_by("-created_at")
+    ratedmodels = RatedModel.objects.filter(is_deleted=False).order_by("-created_at")
     return render(request, 'index.html', {"ratedmodels": ratedmodels, "current_user": current_user})
 
 #Show one
-def show(request, ratedmodel_name, ratedmodel_id):
+def show(request, ratedmodel_name_key):
     current_user = request.user
-    ratedmodel = RatedModel.objects.get(pk=ratedmodel_id)
-    ratedobjects = RatedObject.objects.filter(ratedmodel_id=ratedmodel_id).order_by("-created_at").annotate(overall_grade = Avg('review__score__grade'))
+    ratedmodel = RatedModel.objects.get(name_key=ratedmodel_name_key, is_deleted=False)
+    ratedobjects = RatedObject.objects.filter(ratedmodel_id=ratedmodel.id).order_by("-created_at").annotate(overall_grade = Avg('review__score__grade'))
     attributes = ratedmodel.attribute_set.all()
     return render(request, 'ratedmodel_show.html', {"ratedobjects": ratedobjects, "current_user": current_user, "ratedmodel": ratedmodel, "attributes": attributes})
 
@@ -56,6 +64,7 @@ def create(request):
         if ratedmodel_form.is_valid():
             if attribute_formset.is_valid():
                 ratedmodel = ratedmodel_form.save(commit=False)
+                ratedmodel.name_key = strip_non_alphanum(ratedmodel.name)
                 ratedmodel.creator_id = request.user.userprofile.id
                 ratedmodel.save()
                 tag_title = ratedmodel.name.lower()
@@ -63,9 +72,9 @@ def create(request):
                 for attribute_form in attribute_formset.forms:
                     if attribute_form["name"].value():
                         attribute = attribute_form.save(commit=False)
-                        attribute.ratedmodel_id = ratedmodel.id
+                        attribute.ratedmodel = ratedmodel
                         attribute.save()
-                url = reverse('ratedmodel_show', kwargs={'ratedmodel_name' : ratedmodel.name.replace(" ",""), 'ratedmodel_id' : str(ratedmodel.id)})
+                url = reverse('ratedmodel_show', kwargs={'ratedmodel_name_key' :ratedmodel.name_key})
                 return HttpResponseRedirect(url)
         print(ratedmodel_form.errors)
     else:
@@ -73,12 +82,12 @@ def create(request):
     current_user = request.user
     return render_to_response('ratedmodel_create.html', {"current_user": current_user, "ratedmodel_form": ratedmodel_form, 'attribute_formset': AttributeFormSet()}, context)
 
-def edit(request, ratedmodel_name, ratedmodel_id):
+def edit(request, ratedmodel_name_key):
     if not request.user.is_authenticated():
         return redirect("login")
-    ratedmodel = RatedModel.objects.get(pk=ratedmodel_id)
+    ratedmodel = RatedModel.objects.get(pk=ratedmodel_name_key, is_deleted=False)
     if request.user.userprofile.id != ratedmodel.creator_id:
-        url = reverse('ratedmodel_show', kwargs={'ratedmodel_name' : ratedmodel_name, 'ratedmodel_id' : ratedmodel_id})
+        url = reverse('ratedmodel_show', kwargs={'ratedmodel_name_key' : ratedmodel.name_key})
         return HttpResponseRedirect(url)
     context = RequestContext(request)
     if request.method == "POST":
@@ -87,10 +96,26 @@ def edit(request, ratedmodel_name, ratedmodel_id):
             ratedmodel.name = ratedmodel_form["name"].value()
             ratedmodel.description = ratedmodel_form["description"].value()
             ratedmodel.save()
-            url = reverse('ratedmodel_show', kwargs={'ratedmodel_name' : ratedmodel_name, 'ratedmodel_id' : ratedmodel_id})
+            url = reverse('ratedmodel_show', kwargs={'ratedmodel_name_key' : ratedmodel.name_key})
             return HttpResponseRedirect(url)
         print(ratedmodel_form.errors)
     else:
         ratedmodel_form = RatedModelForm(instance = ratedmodel)
     current_user = request.user
     return render_to_response('ratedmodel_edit.html', {"ratedmodel": ratedmodel, "current_user": current_user, "ratedmodel_form": ratedmodel_form}, context)
+
+def delete(request, ratedmodel_name_key):
+    if not request.user.is_authenticated():
+        return redirect("login")
+    ratedmodel = RatedModel.objects.get(pk=ratedmodel_name_key)
+    if request.user.userprofile.id != ratedmodel.creator_id:
+        url = reverse('ratedmodel_show', kwargs={'ratedmodel_name_key' : ratedmodel.name_key})
+        return HttpResponseRedirect(url)
+    if request.method == "POST":
+        ratedmodel.is_deleted = True
+        ratedmodel.save()
+        return redirect("index")
+    context = RequestContext(request)
+    current_user = request.user
+    ratedmodel_form = RatedModelForm()
+    return render_to_response('ratedmodel_delete.html', {"ratedmodel": ratedmodel, "current_user": current_user}, context)

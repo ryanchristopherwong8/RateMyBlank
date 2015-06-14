@@ -6,6 +6,7 @@ from src.models.userprofile import UserProfile
 
 class RatedModel(models.Model):
     name = models.CharField(max_length=200)
+    name_key = models.CharField(unique=True, max_length=200)
     created_at = models.DateField(default=datetime.now, max_length=200)
     description = models.TextField(max_length=1000, blank=True)
     creator = models.ForeignKey(UserProfile, null=True)

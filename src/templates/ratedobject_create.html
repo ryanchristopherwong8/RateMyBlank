@@ -2,24 +2,26 @@
 
 {% block body_block %}
 
-<h1>Add a {{ ratedmodel.name }} item</h1>
+<div class="form-container">
+    <h1>Add a {{ ratedmodel.name }} item</h1>
 
-<form class="form-horizontal" method="post" action="">
-    {% csrf_token %}
-    <label class="field-wrapper">
-        Name:
-        <div class="form-input">
-            {{ ratedobject_form.name }} {{ ratedobject_form.name.errors.as_text }}
-        </div>
-    </label>
-    <label class="field-wrapper">
-        Description:
-        <div class="form-input">
-            {{ ratedobject_form.description }} {{ ratedobject_form.description.errors.as_text }}
-        </div>
-    </label>
+    <form class="form-horizontal" method="post" action="">
+        {% csrf_token %}
+        <label class="field-wrapper">
+            Name:
+            <div class="form-input">
+                {{ ratedobject_form.name }} {{ ratedobject_form.name.errors.as_text }}
+            </div>
+        </label>
+        <label class="field-wrapper">
+            Description:
+            <div class="form-input">
+                {{ ratedobject_form.description }} {{ ratedobject_form.description.errors.as_text }}
+            </div>
+        </label>
 
-    <input type="submit" value="Submit" />
-</form>
+        <input type="submit" value="Submit" />
+    </form>
+</div>
 
 {% endblock %}

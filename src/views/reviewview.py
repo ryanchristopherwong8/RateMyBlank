@@ -15,6 +15,7 @@ from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django import forms
 from django.forms.formsets import formset_factory
+from src.helpers.application_helper import strip_non_alphanum
 
 class ReviewForm(forms.ModelForm):
     class Meta:
@@ -29,10 +30,14 @@ class ScoreForm(forms.ModelForm):
         fields = ('grade',)
 
 #create new models
-def create(request, ratedmodel_name, ratedmodel_id, ratedobject_name, ratedobject_id):
+def create(request, ratedmodel_name_key, ratedobject_name, ratedobject_id):
     if not request.user.is_authenticated():
         return redirect("login")
     context = RequestContext(request)
+    ratedobject = RatedObject.objects.get(pk=ratedobject_id)
+    ratedmodel = RatedModel.objects.get(name_key=ratedmodel_name_key)
+    if ratedobject_name != strip_non_alphanum(ratedobject.name) or ratedobject.ratedmodel_id != ratedmodel.id:
+        return HttpResponse('<h1>Page was not found</h1>')
     ScoreFormSet = formset_factory(ScoreForm, extra=0)
     if request.method == "POST":
         userprofile = request.user.userprofile
@@ -49,16 +54,16 @@ def create(request, ratedmodel_name, ratedmodel_id, ratedobject_name, ratedobjec
                     score.attribute_id = score_form["attribute_id"].value()
                     score.review_id = review.id
                     score.save()
-                url = reverse('review_show', kwargs={'ratedmodel_name' : ratedmodel_name, 'ratedmodel_id' : ratedmodel_id,
-                    'ratedobject_name' : ratedobject_name, 'ratedobject_id' : ratedobject_id, 'review_id' : review.id})
+                url = reverse('review_show', kwargs={'ratedmodel_name_key' : ratedmodel.name_key, 'ratedobject_name' : ratedobject_name,
+                    'ratedobject_id' : ratedobject_id, 'review_id' : review.id})
                 return HttpResponseRedirect(url)
         print(score_formset.errors)
     else:
         review_form = ReviewForm()
     current_user = request.user
-    attributes = Attribute.objects.filter(ratedmodel = ratedmodel_id)
+    attributes = Attribute.objects.filter(ratedmodel = ratedmodel.id)
     score_formset = ScoreFormSet(initial=[{'attribute_id': attribute.id, 'attribute_name': attribute.name} for attribute in attributes])
-    return render_to_response("review_create.html", {"current_user": current_user, "review_form": review_form, 'score_formset': score_formset}, context)
+    return render_to_response("review_create.html", {"current_user": current_user, "review_form": review_form, 'score_formset': score_formset,  'ratedobject': ratedobject}, context)
 
 def show(request, ratedmodel_name, ratedmodel_id, ratedobject_name, ratedobject_id, review_id):
     current_user = request.user

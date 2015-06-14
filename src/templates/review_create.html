@@ -2,30 +2,33 @@
 
 {% block body_block %}
 
-<form class="form-horizontal" method="post" action="">
-    {% csrf_token %}
-    <label class="field-wrapper">
-        Description:
-        <div class="form-input">
-            {{ review_form.description }}
-        </div>
-    </label>
-    {% csrf_token %}
-    {% load app_filters %}
-        {{ score_formset.management_form }}
-        <div id="score-inputs">
-                {% for score_form in score_formset %}
-                    <div class="form-input">
-                        <div class="score">
-                            <p>{{ score_form.attribute_name.value }}</p>
-                            <p>{{ score_form.attribute_id.as_hidden }}</p>
-                            <p>{{ score_form.grade }}</p>
+<div class="form-container">
+    <h1>Add Reviews for {{ ratedobject.name }}</h1>
+
+    <form class="form-horizontal" method="post" action="">
+        {% csrf_token %}
+        <label class="field-wrapper">
+            Description:
+            <div class="form-input">
+                {{ review_form.description }}
+            </div>
+        </label>
+        {% csrf_token %}
+        {% load app_filters %}
+            {{ score_formset.management_form }}
+            <div id="score-inputs">
+                    {% for score_form in score_formset %}
+                        <div class="form-input">
+                            <div class="score">
+                                <p>{{ score_form.attribute_name.value }}</p>
+                                <p>{{ score_form.attribute_id.as_hidden }}</p>
+                                <p>{{ score_form.grade }}</p>
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
-        </div>
-    <input type="submit" value="Submit" />
-</form>
+                    {% endfor %}
+            </div>
+        <input type="submit" value="Submit" />
+    </form>
 
     {% if score_formset.errors %}
     <div id="form-error">ERRORS:
@@ -38,5 +41,6 @@
         </ul>
     </div>
     {% endif %}
+</div>
 
 {% endblock %}
