@@ -1,14 +1,13 @@
 $( document ).ready(function() {
     $(function() {
-        $( "#slider" ).slider({
-            value: null,
-            min: 0,
-            max: 500,
-            step: 50,
-            slide: function( event, ui ) {
-                $( "#amount" ).val( "$" + ui.value );
-            }
+        $(".score-slider").on("input", function() {
+            var reviewForm = $(this).closest(".review-form");
+            reviewForm.find(".review-score-input").val($(this).val());
         });
-        $( "#amount" ).val( "$" + $( "#slider" ).slider( "value" ) );
+
+        $(".review-score-input").on("input", function() {
+            var reviewForm = $(this).closest(".review-form");
+            reviewForm.find(".score-slider").val($(this).val());
+        });
     });
 });

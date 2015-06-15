@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block javascript %}
+<script src="{{STATIC_URL}}javascript/review_create.js"></script>
+{% endblock %}
+
 {% block body_block %}
 
 <div class="form-container">
@@ -7,33 +11,39 @@
 
     <form class="form-horizontal" method="post" action="">
         {% csrf_token %}
-        <label class="field-wrapper">
-            Description:
-            <div class="form-input">
-                {{ review_form.description }}
-            </div>
-        </label>
-        {% csrf_token %}
         {% load app_filters %}
-            {{ score_formset.management_form }}
-            <div id="score-inputs">
-                    {% for score_form in score_formset %}
-                        <div class="form-input">
-                            <div class="score">
-                                <p>{{ score_form.attribute_name.value }}</p>
-                                <p>{{ score_form.attribute_id.as_hidden }}</p>
-                                <p>{{ score_form.grade }}</p>
+        {{ review_formset.management_form }}
+        <div id="review-forms">
+            {% for review_form in review_formset %}
+                <div class="form-input">
+                    <div class="review-form">
+                        <div class="row">
+                            {{ review_form.attribute_id.as_hidden }}
+                            <div class="col-xs-2">
+                                {{ review_form.attribute_name.value }}
+                            </div>
+                            <div class="col-xs-2">
+                                {{ review_form.score }}
+                            </div>
+                            <div class="col-xs-2">
+                                <input class="score-slider" type="range" min="1" max="5" value="" step="0.1">
+                            </div>
+                            <div class="col-xs-3">
+                                {{ review_form.description}}
                             </div>
                         </div>
-                    {% endfor %}
-            </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
         <input type="submit" value="Submit" />
     </form>
 
-    {% if score_formset.errors %}
+    {% if review_formset.errors %}
     <div id="form-error">ERRORS:
         <ul id="form-error-list">
-            {% for i in score_formset.non_field_errors %}
+            {% for i in review_formset.non_field_errors %}
             <li class="form-error">
                 {{i}}
             </li>

@@ -48,7 +48,7 @@ def index(request):
 def show(request, ratedmodel_name_key):
     current_user = request.user
     ratedmodel = RatedModel.objects.get(name_key=ratedmodel_name_key, is_deleted=False)
-    ratedobjects = RatedObject.objects.filter(ratedmodel_id=ratedmodel.id).order_by("-created_at").annotate(overall_grade = Avg('review__score__grade'))
+    ratedobjects = RatedObject.objects.filter(ratedmodel_id=ratedmodel.id).order_by("-created_at").annotate(overall_grade = Avg('review__score'))
     attributes = ratedmodel.attribute_set.all()
     return render(request, 'ratedmodel_show.html', {"ratedobjects": ratedobjects, "current_user": current_user, "ratedmodel": ratedmodel, "attributes": attributes})
 
