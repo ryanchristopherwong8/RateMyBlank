@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+  <div class="jumbotron well">
+    <div class ="container">
+      <div class ="col-xs-3">
+          <img src="http://placehold.it/200x200">
+      </div>
+      <div class ="col-xs-3 bottom-aligned-text">
+          <p><a href="/user/{{ current_user.username }}">{{ current_user.username }}</a></p>
+      </div>
+
+      <div class ="col-xs-3">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <span class="badge">{{ ratedmodel_count }}</span>
+            Rated Pages
+          </li>
+          <li class="list-group-item">
+            <span class="badge">{{ ratedobject_count }}</span>
+            Rated Objects
+          </li>
+          <li class="list-group-item">
+            <span class="badge">{{ review_count }}</span>
+            Reviews
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

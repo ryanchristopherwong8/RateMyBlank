@@ -10,6 +10,9 @@ from django.template import RequestContext
 from django import forms
 
 from src.models.userprofile import UserProfile
+from src.models.ratedmodel import RatedModel
+from src.models.ratedobject import RatedObject
+from src.models.review import Review
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -84,3 +87,12 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+def user_show(request, user_name):
+    current_user = request.user
+    ratedmodel_count = RatedModel.objects.filter(creator_id = current_user.userprofile.id, is_deleted = False).count()
+    ratedobject_count = RatedObject.objects.filter(creator_id = current_user.userprofile.id, is_deleted = False).count()
+    review_count = Review.objects.filter(userprofile_id = current_user.userprofile.id, is_deleted = False).count()
+    return render(request, 'user_show.html', {'current_user': current_user, 'ratedmodel_count': ratedmodel_count,
+        'ratedobject_count': ratedobject_count, 'review_count': review_count})
+

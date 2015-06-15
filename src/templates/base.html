@@ -40,7 +40,13 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_authenticated %}
-                    <li class="navbar-text">Logged in as <span style="color: #464646">{{ current_user.username }}</span></li>
+                    <li class="navbar-text">
+                        <span style="color: #464646">
+                            <a href="/user/{{current_user.username}}/">
+                                {{ current_user.username }}
+                            </a>
+                        </span>
+                    </li>
                     <li><a href="/logout/">Logout</a></li>
                     {% else %}
                     <li><a href="/signup/">Sign Up</a></li>

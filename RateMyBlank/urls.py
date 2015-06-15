@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     url(r'^signup/$', userview.register, name='register'),
     url(r'^login/$', userview.user_login, name='login'),
     url(r'^logout/$', userview.user_logout, name='logout'),
+    url(r'^user/(?P<user_name>[-\w]+)/$', userview.user_show, name='show'),
 
     # Rated Model
     url(r'^ratedmodel/create/$', ratedmodelview.create, name='ratedmodel_create'),
