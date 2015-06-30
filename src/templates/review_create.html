@@ -19,18 +19,24 @@
                     <div class="review-form">
                         <div class="row">
                             {{ review_form.attribute_id.as_hidden }}
-                            <div class="col-xs-2">
+                            {{ review_form.review_id.as_hidden }}
+                            <div class="col-xs-1">
                                 {{ review_form.attribute_name.value }}
                             </div>
                             <div class="col-xs-2">
-                                {{ review_form.score }}
+                                {{ review_form.score }} {{ review_form.score.errors.as_text }}
                             </div>
                             <div class="col-xs-2">
                                 <input class="score-slider" type="range" min="1" max="5" value="" step="0.1">
                             </div>
                             <div class="col-xs-3">
-                                {{ review_form.description}}
+                                {{ review_form.description }} {{ review_form.description.errors.as_text }}
                             </div>
+                            {% if review_form.review_id.value %}
+                            <div class="col-xs-1">
+                                {{ review_form.is_deleted }}<br>Delete Review
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
