@@ -27,8 +27,8 @@ def show(request, ratedmodel_name_key, ratedobject_name, ratedobject_id):
     if not is_url_valid(ratedmodel, ratedobject_name, ratedobject):
         return HttpResponse('<h1>Page was not found</h1>')
     reviews = ratedobject.review_set.filter(is_deleted=False)
-    attributes = ratedobject.ratedmodel.attribute_set.filter(review__ratedobject_id = ratedobject_id).annotate(avg_grade = Avg('review__score'))
-    overall_grade = list(ratedobject.review_set.aggregate(Avg('score')).values())[0]
+    attributes = ratedobject.ratedmodel.attribute_set.filter(review__ratedobject_id = ratedobject_id, review__is_deleted=False).annotate(avg_grade = Avg('review__score'))
+    overall_grade = list(ratedobject.review_set.filter(is_deleted=False).aggregate(Avg('score')).values())[0]
     return render(request, 'ratedobject_show.html', {"ratedobject": ratedobject, "ratedmodel": ratedmodel, "reviews": reviews, "attributes": attributes,
         "overall_grade": overall_grade, "current_user": current_user})
 
