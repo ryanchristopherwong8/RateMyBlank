@@ -24,7 +24,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ["guarded-peak-1684.herokuapp.com"]
+ALLOWED_HOSTS = ["https://rate-my-blank.herokuapp.com/"]
 
 
 # Application definition
